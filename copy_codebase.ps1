@@ -1,3 +1,4 @@
+# Example usage: .\copy_codebase.ps1 .\a_tasks\ .\a_core\ .\templates\
 # Check if at least one path argument is provided
 if ($args.Count -eq 0) {
     Write-Host "Please provide one or more relative paths as arguments."
