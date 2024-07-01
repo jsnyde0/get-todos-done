@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.utils import timezone
 from django.urls import reverse
+from django.core.exceptions import ValidationError
 
 class Task(models.Model):
     REVIEW_STAGES = [
@@ -31,13 +32,13 @@ class Task(models.Model):
     parent_task = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, related_name='subtasks')
     review_date = models.DateField(null=True, blank=True)
     due_date = models.DateField(null=True, blank=True)
-    review_stage = models.CharField(max_length=10, choices=REVIEW_STAGES, default='INBOX')
+    review_stage = models.CharField(max_length=10, choices=REVIEW_STAGES, default='INBOX', null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     completed_at = models.DateTimeField(null=True, blank=True)
     completed = models.BooleanField(default=False)
-    priority = models.IntegerField(choices=PRIORITY_CHOICES, default=2)
-    category = models.ForeignKey('Category', on_delete=models.SET_NULL, null=True, blank=True)
+    priority = models.IntegerField(choices=PRIORITY_CHOICES, default=2, null=True, blank=True)
+    board = models.ForeignKey('Board', on_delete=models.SET_NULL, null=True, blank=True, related_name='tasks')
     tags = models.ManyToManyField('Tag', blank=True)  # Changed to ManyToManyField
     type = models.CharField(max_length=11, choices=TYPE_CHOICES, default='NEXT_ACTION')
 
@@ -59,23 +60,37 @@ class Task(models.Model):
 
     def __str__(self):
         return self.title
+    
+    def clean(self):
+        if not self.parent_task and not self.review_stage:
+            raise ValidationError("Review stage is required for top-level tasks.")
+        if self.board and not self.review_stage:
+            raise ValidationError("Review stage is required for tasks assigned to a board.")
+        if self.review_stage and not (self.board or not self.parent_task):
+            raise ValidationError("Review stage should only be set for top-level tasks or tasks assigned to a board.")
+        
+    def save(self, *args, **kwargs):
+        if not self.pk and not self.assignee:  # Only for new tasks without an assignee
+            self.assignee = self.author
+        self.full_clean()
+        super().save(*args, **kwargs)
 
     class Meta:
         ordering = ['-priority', 'due_date', 'created_at']
 
-class Category(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='categories')
+class Board(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='boards')
     name = models.CharField(max_length=100)
     description = models.TextField(blank=True)
 
     # def get_absolute_url(self):
-    #     return reverse('category_detail', kwargs={'pk': self.pk})
+    #     return reverse('board_detail', kwargs={'pk': self.pk})
 
     def __str__(self):
         return self.name
 
     class Meta:
-        verbose_name_plural = "Categories"
+        verbose_name_plural = "Boards"
 
 class Tag(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='tags')

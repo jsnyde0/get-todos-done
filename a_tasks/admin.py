@@ -1,20 +1,20 @@
 from django.contrib import admin
 from django.utils.html import format_html
-from .models import Task, Category, Tag
+from .models import Task, Board, Tag
 
 @admin.register(Task)
 class TaskAdmin(admin.ModelAdmin):
     list_display = ('title', 'author', 'assignee', 'review_stage', 'due_date', 'priority', 'type', 'completed', 'colored_review_stage')
-    list_filter = ('review_stage', 'priority', 'type', 'completed', 'category')
+    list_filter = ('review_stage', 'priority', 'type', 'completed', 'board')
     search_fields = ('title', 'description', 'author__username', 'assignee__username')
-    autocomplete_fields = ('author', 'assignee', 'parent_task', 'category')
+    autocomplete_fields = ('author', 'assignee', 'parent_task', 'board')
     readonly_fields = ('created_at', 'updated_at', 'completed_at')
     fieldsets = (
         (None, {
             'fields': ('title', 'description', 'type', 'parent_task')
         }),
         ('Assignment', {
-            'fields': ('author', 'assignee', 'category', 'tags')
+            'fields': ('author', 'assignee', 'board', 'tags')
         }),
         ('Dates', {
             'fields': ('review_date', 'due_date', 'created_at', 'updated_at', 'completed_at')
@@ -49,8 +49,8 @@ class TaskAdmin(admin.ModelAdmin):
             return qs.filter(author=request.user)
         return qs
 
-@admin.register(Category)
-class CategoryAdmin(admin.ModelAdmin):
+@admin.register(Board)
+class BoardAdmin(admin.ModelAdmin):
     list_display = ('name', 'user', 'task_count')
     list_filter = ('user',)
     search_fields = ('name', 'description', 'user__username')
