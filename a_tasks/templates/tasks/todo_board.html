@@ -2,14 +2,14 @@
 {% load partials %}
 
 {% partialdef kanban_column %}
-<div class="bg-purple-800 rounded-lg shadow-lg mb-4 md:mb-0 flex-shrink-0 w-full md:w-80 flex flex-col mr-4 mt-4 ml-4 md:h-[calc(100vh-10rem)]">
-    <h2 class="text-lg font-semibold p-4">{{review_stage.name}}</h2>
+<div class="bg-gray-800 rounded-lg shadow-lg mb-4 md:mb-0 flex-shrink-0 w-full md:w-80 flex flex-col mr-4 mt-4 ml-4 md:h-[calc(100vh-10rem)]">
+    <h2 class="text-lg font-semibold p-4 text-gray-100 border-b border-gray-700">{{review_stage.name}}</h2>
     <div class="flex-grow overflow-y-auto scrollbar-thin">
         {% for task in review_stage.tasks.all %}
         <div class="task">{{task.title}}</div>
         {% endfor %}
     </div>
-    <button class="w-full text-left p-2 hover:bg-purple-700 transition-colors duration-100 rounded">
+    <button class="w-full text-left p-2 text-gray-400 hover:bg-purple-700 hover:text-gray-100 transition-colors duration-200 rounded">
         + Add a card
     </button>
 </div>

@@ -7,6 +7,12 @@
     <link rel="icon" type="image/png" href="https://img.icons8.com/nolan/64/todo-list.png">
     <script src="https://cdn.tailwindcss.com"></script>
     <style type="text/tailwindcss">
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
         /* Custom scrollbar styles */
         .scrollbar-thin::-webkit-scrollbar {
             width: 6px;
@@ -20,13 +26,13 @@
             border-radius: 3px;
         }
         .task {
-            @apply bg-purple-950 m-2 p-2 rounded hover:bg-purple-600 transition-colors duration-100
+            @apply bg-gray-800 text-gray-100 hover:bg-gray-500 m-2 p-2 rounded-md shadow-sm hover:shadow-md transition duration-100
         }
     </style>
 </head>
-<body class="h-full flex flex-col bg-purple-900 text-white overflow-hidden">
+<body class="h-full flex flex-col bg-gray-900 text-gray-100 overflow-hidden">
     
-    <header class="bg-purple-950 p-4 flex-shrink-0">
+    <header class="bg-gray-800 border-gray-700 p-4 flex-shrink-0">
         {% block header %}
         {% endblock %}
     </header>
