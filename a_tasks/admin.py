@@ -57,7 +57,7 @@ class BoardAdmin(admin.ModelAdmin):
     autocomplete_fields = ('user',)
 
     def task_count(self, obj):
-        return obj.task_set.count()
+        return obj.tasks.count()
     task_count.short_description = 'Number of Tasks'
 
 @admin.register(Tag)
