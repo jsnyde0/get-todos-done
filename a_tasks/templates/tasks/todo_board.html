@@ -28,18 +28,18 @@
     {% endfor %}
 
     <!-- Task Detail Pane -->
-    <div id="task-detail-pane" class="fixed top-16 right-0 bg-gray-800 shadow-lg h-[calc(100vh-4rem)] w-full md:w-96 p-4 overflow-y-auto scrollbar-thin hidden md:block">
-        <h2 class="text-xl font-semibold text-gray-100 mb-4">P - Implemented "instagram meets imdb" app</h2>
+    <div id="task-detail-pane" class="fixed md:top-16 top-16 right-0 bg-gray-800 shadow-lg md:h-[calc(100vh-4rem)] h-[calc(100vh-4rem)] w-full md:w-96 p-4 overflow-y-auto scrollbar-thin">
+        <h2 class="text-xl font-semibold text-gray-100 mb-4">{{ first_task.title }}</h2>
         <div class="flex items-center mb-4">
             <img class="w-10 h-10 rounded-full mr-3" src="https://via.placeholder.com/40" alt="Assignee Avatar">
             <div>
-                <h3 class="text-base font-medium text-gray-200">Jonatan Snyders</h3>
+                <h3 class="text-base font-medium text-gray-200">{{ first_task.assignee.username }}</h3>
                 <p class="text-sm text-gray-400">Recently assigned</p>
             </div>
         </div>
         <div class="mb-4">
             <h3 class="text-sm font-medium text-gray-400">Due date</h3>
-            <p class="text-base text-gray-200">No due date</p>
+            <p class="text-base text-gray-200">{{ first_task.due_date|default:"No due date" }}</p>
         </div>
         <div class="mb-4">
             <h3 class="text-sm font-medium text-gray-400">Projects</h3>
