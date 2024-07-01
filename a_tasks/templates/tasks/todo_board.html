@@ -28,49 +28,49 @@
     {% endfor %}
 
     <!-- Task Detail Pane -->
-    <div id="task-detail-pane" class="fixed top-16 right-0 bg-gray-800 shadow-lg h-[calc(100vh-4rem)] w-full md:w-80 p-4 overflow-y-auto scrollbar-thin hidden md:block">
-        <h2 class="text-lg font-semibold text-gray-100 mb-4">Task Details</h2>
-        <div class="text-gray-100 space-y-2">
+    <div id="task-detail-pane" class="fixed top-16 right-0 bg-gray-800 shadow-lg h-[calc(100vh-4rem)] w-full md:w-96 p-4 overflow-y-auto scrollbar-thin hidden md:block">
+        <h2 class="text-xl font-semibold text-gray-100 mb-4">P - Implemented "instagram meets imdb" app</h2>
+        <div class="flex items-center mb-4">
+            <img class="w-10 h-10 rounded-full mr-3" src="https://via.placeholder.com/40" alt="Assignee Avatar">
             <div>
-                <h3 class="text-sm font-medium text-gray-400">Title</h3>
-                <p class="text-base">Dummy Task Title</p>
+                <h3 class="text-base font-medium text-gray-200">Jonatan Snyders</h3>
+                <p class="text-sm text-gray-400">Recently assigned</p>
             </div>
-            <div>
-                <h3 class="text-sm font-medium text-gray-400">Description</h3>
-                <p class="text-base">This is a dummy description for the task.</p>
+        </div>
+        <div class="mb-4">
+            <h3 class="text-sm font-medium text-gray-400">Due date</h3>
+            <p class="text-base text-gray-200">No due date</p>
+        </div>
+        <div class="mb-4">
+            <h3 class="text-sm font-medium text-gray-400">Projects</h3>
+            <div class="flex items-center space-x-2">
+                <span class="bg-blue-600 text-gray-200 text-xs font-semibold py-1 px-2 rounded-full">Learning</span>
+                <span class="bg-purple-600 text-gray-200 text-xs font-semibold py-1 px-2 rounded-full">Review Monthly</span>
             </div>
-            <div>
-                <h3 class="text-sm font-medium text-gray-400">Author</h3>
-                <p class="text-base">John Doe</p>
+        </div>
+        <div class="mb-4">
+            <h3 class="text-sm font-medium text-gray-400">Description</h3>
+            <p class="text-base text-gray-200">So like awesome pixx, but:
+                <br>Movies instead of Posts
+                <br>You can only see comments/likes of 'friends'
+                <br>Goodreads opzoeken
+            </p>
+        </div>
+        <div class="mb-4">
+            <h3 class="text-sm font-medium text-gray-400">Subtasks</h3>
+            <div class="space-y-2">
+                <div class="flex items-center">
+                    <input type="checkbox" class="form-checkbox h-4 w-4 text-purple-600" checked>
+                    <span class="ml-2 text-base text-gray-200">Subtask 1</span>
+                </div>
+                <div class="flex items-center">
+                    <input type="checkbox" class="form-checkbox h-4 w-4 text-purple-600" checked>
+                    <span class="ml-2 text-base text-gray-200">Subtask 2</span>
+                </div>
             </div>
-            <div>
-                <h3 class="text-sm font-medium text-gray-400">Assignee</h3>
-                <p class="text-base">Jane Smith</p>
-            </div>
-            <div>
-                <h3 class="text-sm font-medium text-gray-400">Due Date</h3>
-                <p class="text-base">2024-12-31</p>
-            </div>
-            <div>
-                <h3 class="text-sm font-medium text-gray-400">Priority</h3>
-                <p class="text-base">High</p>
-            </div>
-            <div>
-                <h3 class="text-sm font-medium text-gray-400">Type</h3>
-                <p class="text-base">Next Action</p>
-            </div>
-            <div>
-                <h3 class="text-sm font-medium text-gray-400">Review Stage</h3>
-                <p class="text-base">Inbox</p>
-            </div>
-            <div>
-                <h3 class="text-sm font-medium text-gray-400">Tags</h3>
-                <p class="text-base">Work, Important</p>
-            </div>
-            <div>
-                <h3 class="text-sm font-medium text-gray-400">Board</h3>
-                <p class="text-base">Project Board</p>
-            </div>
+            <button class="mt-2 text-left text-sm text-purple-400 hover:text-purple-200 transition-colors duration-200">
+                + Add subtask
+            </button>
         </div>
     </div>
 </div>
