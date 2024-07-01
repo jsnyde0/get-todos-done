@@ -22,12 +22,18 @@
 {% endblock %}
 
 {% block content %}
-<div class="h-full flex flex-col md:flex-row md:items-start overflow-y-auto md:overflow-x-auto scrollbar-thin p-4 -mt-4 -ml-4 relative">    {% for review_stage in review_stages %}
-        {% partial kanban_column %}
-    {% endfor %}
+<div class="h-full p-4 -mt-4 relative overflow-hidden">
+    <div class="grid grid-cols-1 md:grid-flow-col md:auto-cols-max gap-4 md:overflow-x-auto scrollbar-thin p-2">
+        {% for review_stage in review_stages %}
+            <div class="mx-auto w-full md:w-auto">
+                {% partial kanban_column %}
+            </div>
+        {% endfor %}
+    </div>   
 
     <!-- Task Detail Pane -->
-    <div id="task-detail-pane" class="fixed md:top-16 top-16 right-0 bg-gray-800 shadow-lg md:h-[calc(100vh-4rem)] h-[calc(100vh-4rem)] w-full md:w-96 p-4 overflow-y-auto scrollbar-thin">
+    <div id="task-detail-pane" class="fixed md:top-16 top-16 right-0 bg-gray-800 shadow-lg md:h-[calc(100vh-4rem)] h-[calc(100vh-4rem)] w-full md:w-96 p-4 overflow-y-auto scrollbar-thin hidden">
+        <button class="md:hidden text-gray-100 text-sm mb-4" onclick="closeTaskPane()">Close</button>
         <h2 class="text-xl font-semibold text-gray-100 mb-4">{{ first_task.title }}</h2>
         <div class="flex items-center mb-4">
             <img class="w-10 h-10 rounded-full mr-3" src="https://via.placeholder.com/40" alt="Assignee Avatar">
