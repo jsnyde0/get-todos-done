@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Getting Todos Done</title>
+    <title>{% block title %}Getting Todos Done{% endblock %}</title>
     <link rel="icon" type="image/png" href="https://img.icons8.com/nolan/64/todo-list.png">
     <script src="https://cdn.tailwindcss.com"></script>
     <style type="text/tailwindcss">
@@ -19,133 +19,22 @@
             background-color: #8b5cf6;
             border-radius: 3px;
         }
-        .kanban-column {
-            @apply bg-purple-800 rounded-lg shadow-lg mb-4 md:mb-0 flex-shrink-0 w-full md:w-80 flex flex-col mr-4 mt-4 ml-4 md:h-[calc(100vh-10rem)]
-        }
         .task {
             @apply bg-purple-950 m-2 p-2 rounded hover:bg-purple-600 transition-colors duration-100
         }
     </style>
 </head>
 <body class="h-full flex flex-col bg-purple-900 text-white overflow-hidden">
+    
     <header class="bg-purple-950 p-4 flex-shrink-0">
-        <div class="container mx-auto flex justify-between items-center">
-            <h1 class="text-xl font-bold">My Todos</h1>
-            <div class="flex items-center space-x-4">
-                <button class="bg-purple-800 hover:bg-purple-700 px-3 py-1 rounded">Board ▼</button>
-                <button class="bg-purple-800 hover:bg-purple-700 px-3 py-1 rounded">Filters</button>
-                <button class="bg-purple-800 hover:bg-purple-700 px-3 py-1 rounded">Share</button>
-            </div>
-        </div>
+        {% block header %}
+        {% endblock %}
     </header>
+    
 
     <main class="flex-grow overflow-hidden">
-        <div class="h-full flex flex-col md:flex-row md:items-start md:overflow-x-auto scrollbar-thin p-4 -mt-4 -ml-4">
-            <div class="kanban-column ">
-                <h2 class="text-lg font-semibold p-4">Inbox</h2>
-                <div class="flex-grow overflow-y-auto scrollbar-thin">
-                    <div class="task">Task 1</div>
-                    <div class="task">Task 2</div>
-                    <!-- More tasks... -->
-                </div>
-                <button class="w-full text-left p-2 hover:bg-purple-700 transition-colors duration-100 rounded-lg">
-                    + Add a card
-                </button>
-            </div>
-
-            <div class="kanban-column">
-                <h2 class="text-lg font-semibold p-4">Review Daily</h2>
-                <div class="flex-grow overflow-y-auto scrollbar-thin">
-                    <div class="task">Task 3</div>
-                    <div class="task">Task 3</div>
-                    <div class="task">Task 3</div>
-                    <div class="task">Task 3</div>
-                    <div class="task">Task 3</div>
-                    <div class="task">Task 3</div>
-                    <div class="task">Task 3</div>
-                    <div class="task">Task 3</div>
-                    <div class="task">Task 3</div>
-                    <div class="task">Task 3</div>
-                    <div class="task">Task 3</div>
-                    <div class="task">Task 3</div>
-                    <div class="task">Task 3</div>
-                    <div class="task">Task 3</div>
-                    <div class="task">Task 3</div>
-                    <div class="task">Task 3</div>
-                    <div class="task">Task 3</div>
-                    <div class="task">Task 3</div>
-                    <div class="task">Task 3</div>
-                    <div class="task">Task 3</div>
-                    <!-- More tasks... -->
-                </div>
-                <button class="w-full text-left p-2 hover:bg-purple-700 transition-colors duration-100 rounded-lg">
-                    + Add a card
-                </button>
-            </div>
-
-            <!-- More columns... -->
-            <div class="kanban-column">
-                <h2 class="text-lg font-semibold p-4">Review Weekly</h2>
-                <div class="flex-grow overflow-y-auto scrollbar-thin">
-                    <div class="task">Task 3</div>
-                    <!-- More tasks... -->
-                </div>
-                <button class="w-full text-left p-2 hover:bg-purple-700 transition-colors duration-100 rounded-lg">
-                    + Add a card
-                </button>
-            </div>
-            <div class="kanban-column">
-                <h2 class="text-lg font-semibold p-4">Review Monthly</h2>
-                <div class="flex-grow overflow-y-auto scrollbar-thin">
-                    <div class="task">Task 3</div>
-                    <!-- More tasks... -->
-                </div>
-                <button class="w-full text-left p-2 hover:bg-purple-700 transition-colors duration-100 rounded-lg">
-                    + Add a card
-                </button>
-            </div>
-            <div class="kanban-column">
-                <h2 class="text-lg font-semibold p-4">Review Quarterly</h2>
-                <div class="flex-grow overflow-y-auto scrollbar-thin">
-                    <div class="task">Task 3</div>
-                    <!-- More tasks... -->
-                </div>
-                <button class="w-full text-left p-2 hover:bg-purple-700 transition-colors duration-100 rounded-lg">
-                    + Add a card
-                </button>
-            </div>
-            <div class="kanban-column">
-                <h2 class="text-lg font-semibold p-4">Subtask in Review / Planned</h2>
-                <div class="flex-grow overflow-y-auto scrollbar-thin">
-                    <div class="task">Task 3</div>
-                    <!-- More tasks... -->
-                </div>
-                <button class="w-full text-left p-2 hover:bg-purple-700 transition-colors duration-100 rounded-lg">
-                    + Add a card
-                </button>
-            </div>
-            <div class="kanban-column">
-                <h2 class="text-lg font-semibold p-4">Someday</h2>
-                <div class="flex-grow overflow-y-auto scrollbar-thin">
-                    <div class="task">Task 3</div>
-                    <!-- More tasks... -->
-                </div>
-                <button class="w-full text-left p-2 hover:bg-purple-700 transition-colors duration-100 rounded-lg">
-                    + Add a card
-                </button>
-            </div>
-            <div class="kanban-column">
-                <h2 class="text-lg font-semibold p-4">Maybe</h2>
-                <div class="flex-grow overflow-y-auto scrollbar-thin">
-                    <div class="task">Task 3</div>
-                    <!-- More tasks... -->
-                </div>
-                <button class="w-full text-left p-2 hover:bg-purple-700 transition-colors duration-100 rounded-lg">
-                    + Add a card
-                </button>
-            </div>
-
-        </div>
+        {% block content %}
+        {% endblock %}
     </main>
 </body>
 </html>

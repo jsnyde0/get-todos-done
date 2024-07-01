@@ -1,0 +1,115 @@
+{% extends 'base.html' %}
+
+{% block title %}Getting Todos Done{% endblock %}
+
+{% block header %}
+    {% include 'components/header.html' %}
+{% endblock %}
+
+{% block content %}
+<div class="h-full flex flex-col md:flex-row md:items-start md:overflow-x-auto scrollbar-thin p-4 -mt-4 -ml-4">
+    <div class="bg-purple-800 rounded-lg shadow-lg mb-4 md:mb-0 flex-shrink-0 w-full md:w-80 flex flex-col mr-4 mt-4 ml-4 md:h-[calc(100vh-10rem)]">
+        <h2 class="text-lg font-semibold p-4">Inbox</h2>
+        <div class="flex-grow overflow-y-auto scrollbar-thin">
+            <div class="task">Task 1</div>
+            <div class="task">Task 2</div>
+            <!-- More tasks... -->
+        </div>
+        <button class="w-full text-left p-2 hover:bg-purple-700 transition-colors duration-100 rounded">
+            + Add a card
+        </button>
+    </div>
+
+    <div class="bg-purple-800 rounded-lg shadow-lg mb-4 md:mb-0 flex-shrink-0 w-full md:w-80 flex flex-col mr-4 mt-4 ml-4 md:h-[calc(100vh-10rem)]">
+        <h2 class="text-lg font-semibold p-4">Review Daily</h2>
+        <div class="flex-grow overflow-y-auto scrollbar-thin">
+            <div class="task">Task 3</div>
+            <div class="task">Task 3</div>
+            <div class="task">Task 3</div>
+            <div class="task">Task 3</div>
+            <div class="task">Task 3</div>
+            <div class="task">Task 3</div>
+            <div class="task">Task 3</div>
+            <div class="task">Task 3</div>
+            <div class="task">Task 3</div>
+            <div class="task">Task 3</div>
+            <div class="task">Task 3</div>
+            <div class="task">Task 3</div>
+            <div class="task">Task 3</div>
+            <div class="task">Task 3</div>
+            <div class="task">Task 3</div>
+            <div class="task">Task 3</div>
+            <div class="task">Task 3</div>
+            <div class="task">Task 3</div>
+            <div class="task">Task 3</div>
+            <div class="task">Task 3</div>
+            <!-- More tasks... -->
+        </div>
+        <button class="w-full text-left p-2 hover:bg-purple-700 transition-colors duration-200">
+            + Add a card
+        </button>
+    </div>
+
+    <!-- More columns... -->
+    <div class="bg-purple-800 rounded-lg shadow-lg mb-4 md:mb-0 flex-shrink-0 w-full md:w-80 flex flex-col mr-4 mt-4 ml-4 md:h-[calc(100vh-10rem)]">
+        <h2 class="text-lg font-semibold p-4">Review Weekly</h2>
+        <div class="flex-grow overflow-y-auto scrollbar-thin">
+            <div class="task">Task 3</div>
+            <!-- More tasks... -->
+        </div>
+        <button class="w-full text-left p-2 hover:bg-purple-700 transition-colors duration-200">
+            + Add a card
+        </button>
+    </div>
+    <div class="bg-purple-800 rounded-lg shadow-lg mb-4 md:mb-0 flex-shrink-0 w-full md:w-80 flex flex-col mr-4 mt-4 ml-4 md:h-[calc(100vh-10rem)]">
+        <h2 class="text-lg font-semibold p-4">Review Monthly</h2>
+        <div class="flex-grow overflow-y-auto scrollbar-thin">
+            <div class="task">Task 3</div>
+            <!-- More tasks... -->
+        </div>
+        <button class="w-full text-left p-2 hover:bg-purple-700 transition-colors duration-200">
+            + Add a card
+        </button>
+    </div>
+    <div class="bg-purple-800 rounded-lg shadow-lg mb-4 md:mb-0 flex-shrink-0 w-full md:w-80 flex flex-col mr-4 mt-4 ml-4 md:h-[calc(100vh-10rem)]">
+        <h2 class="text-lg font-semibold p-4">Review Quarterly</h2>
+        <div class="flex-grow overflow-y-auto scrollbar-thin">
+            <div class="task">Task 3</div>
+            <!-- More tasks... -->
+        </div>
+        <button class="w-full text-left p-2 hover:bg-purple-700 transition-colors duration-200">
+            + Add a card
+        </button>
+    </div>
+    <div class="bg-purple-800 rounded-lg shadow-lg mb-4 md:mb-0 flex-shrink-0 w-full md:w-80 flex flex-col mr-4 mt-4 ml-4 md:h-[calc(100vh-10rem)]">
+        <h2 class="text-lg font-semibold p-4">Subtask in Review / Planned</h2>
+        <div class="flex-grow overflow-y-auto scrollbar-thin">
+            <div class="task">Task 3</div>
+            <!-- More tasks... -->
+        </div>
+        <button class="w-full text-left p-2 hover:bg-purple-700 transition-colors duration-200">
+            + Add a card
+        </button>
+    </div>
+    <div class="bg-purple-800 rounded-lg shadow-lg mb-4 md:mb-0 flex-shrink-0 w-full md:w-80 flex flex-col mr-4 mt-4 ml-4 md:h-[calc(100vh-10rem)]">
+        <h2 class="text-lg font-semibold p-4">Someday</h2>
+        <div class="flex-grow overflow-y-auto scrollbar-thin">
+            <div class="task">Task 3</div>
+            <!-- More tasks... -->
+        </div>
+        <button class="w-full text-left p-2 hover:bg-purple-700 transition-colors duration-200">
+            + Add a card
+        </button>
+    </div>
+    <div class="bg-purple-800 rounded-lg shadow-lg mb-4 md:mb-0 flex-shrink-0 w-full md:w-80 flex flex-col mr-4 mt-4 ml-4 md:h-[calc(100vh-10rem)]">
+        <h2 class="text-lg font-semibold p-4">Maybe</h2>
+        <div class="flex-grow overflow-y-auto scrollbar-thin">
+            <div class="task">Task 3</div>
+            <!-- More tasks... -->
+        </div>
+        <button class="w-full text-left p-2 hover:bg-purple-700 transition-colors duration-200">
+            + Add a card
+        </button>
+    </div>
+</div>
+{% endblock %}
