@@ -7,7 +7,10 @@ id="kanban_column_{{review_stage.slug}}">
     <h2 class="text-lg font-semibold p-4 text-gray-100 border-b border-gray-700">{{review_stage.name}}</h2>
     <div class="flex-grow overflow-y-auto scrollbar-thin">
         {% for task in review_stage.tasks.all %}
-        <div x-on:click="taskPaneOpen = !taskPaneOpen" class="task">{{task.title}}</div>
+        <div x-on:click="taskPaneOpen = !taskPaneOpen" class="task"
+        hx-get="{{task.get_absolute_url}}">
+            {{task.title}}
+        </div>
         {% endfor %}
     </div>
     <button class="w-full text-left p-2 text-gray-400 hover:bg-purple-700 hover:text-gray-100 transition-colors duration-200 rounded">
@@ -33,6 +36,7 @@ id="kanban_column_{{review_stage.slug}}">
     </div>   
 
     <!-- Task Detail Pane -->
+    {% partialdef task_detail_pane inline=True %}
     <div id="task-detail-pane" class="fixed md:top-16 top-16 right-0 bg-gray-800 shadow-lg md:h-[calc(100vh-4rem)] h-[calc(100vh-4rem)] w-full md:w-96 p-4 overflow-y-auto scrollbar-thin"
     x-show="taskPaneOpen" x-on:click.away="taskPaneOpen = false" x-on:keydown.escape.window="taskPaneOpen = false"
     x-transition:enter="transition ease-out duration-150"
@@ -84,5 +88,6 @@ id="kanban_column_{{review_stage.slug}}">
             </button>
         </div>
     </div>
+    {% endpartialdef %}
 </div>
 {% endblock %}
