@@ -1,10 +1,20 @@
 from django.contrib import admin
 from django.utils.html import format_html
-from .models import Task, Board, Tag
+from .models import ReviewStage, Task, Board, Tag
+
+@admin.register(ReviewStage)
+class ReviewStageAdmin(admin.ModelAdmin):
+    list_display = ('name', 'slug', 'order', 'task_count')
+    list_editable = ('order',)
+    prepopulated_fields = {'slug': ('name',)}
+
+    def task_count(self, obj):
+        return obj.tasks.count()
+    task_count.short_description = 'Number of Tasks'
 
 @admin.register(Task)
 class TaskAdmin(admin.ModelAdmin):
-    list_display = ('title', 'author', 'assignee', 'review_stage', 'due_date', 'priority', 'type', 'completed', 'colored_review_stage')
+    list_display = ('title', 'author', 'assignee', 'review_stage', 'due_date', 'priority', 'type', 'completed', 'review_stage')
     list_filter = ('review_stage', 'priority', 'type', 'completed', 'board')
     search_fields = ('title', 'description', 'author__username', 'assignee__username')
     autocomplete_fields = ('author', 'assignee', 'parent_task', 'board')
@@ -25,23 +35,23 @@ class TaskAdmin(admin.ModelAdmin):
     )
     filter_horizontal = ('tags',)
 
-    def colored_review_stage(self, obj):
-        colors = {
-            'INBOX': 'blue',
-            'DAILY': 'green',
-            'WEEKLY': 'purple',
-            'MONTHLY': 'orange',
-            'QUARTERLY': 'red',
-            'PLANNED': 'teal',
-            'SOMEDAY': 'gray',
-            'MAYBE': 'pink',
-        }
-        return format_html(
-            '<span style="color: {};">{}</span>',
-            colors.get(obj.review_stage, 'black'),
-            obj.get_review_stage_display()
-        )
-    colored_review_stage.short_description = 'Review Stage'
+    # def colored_review_stage(self, obj):
+    #     colors = {
+    #         'INBOX': 'blue',
+    #         'DAILY': 'green',
+    #         'WEEKLY': 'purple',
+    #         'MONTHLY': 'orange',
+    #         'QUARTERLY': 'red',
+    #         'PLANNED': 'teal',
+    #         'SOMEDAY': 'gray',
+    #         'MAYBE': 'pink',
+    #     }
+    #     return format_html(
+    #         '<span style="color: {};">{}</span>',
+    #         colors.get(obj.review_stage, 'black'),
+    #         obj.get_review_stage_display()
+    #     )
+    # colored_review_stage.short_description = 'Review Stage'
 
     def get_queryset(self, request):
         qs = super().get_queryset(request)

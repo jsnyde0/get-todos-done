@@ -3,18 +3,25 @@ from django.contrib.auth.models import User
 from django.utils import timezone
 from django.urls import reverse
 from django.core.exceptions import ValidationError
+from django.utils.text import slugify
+
+class ReviewStage(models.Model):
+    name = models.CharField(max_length=100)
+    slug = models.SlugField(unique=True, blank=True)
+    order = models.IntegerField(default=0)
+
+    class Meta:
+        ordering = ['order']
+
+    def __str__(self):
+        return self.name
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.name)
+        super().save(*args, **kwargs)
 
 class Task(models.Model):
-    REVIEW_STAGES = [
-        ('INBOX', 'Inbox'),
-        ('DAILY', 'Review Daily'),
-        ('WEEKLY', 'Review Weekly'),
-        ('MONTHLY', 'Review Monthly'),
-        ('QUARTERLY', 'Review Quarterly'),
-        ('PLANNED', 'Subtask in Review/Planned'),
-        ('SOMEDAY', 'Someday'),
-        ('MAYBE', 'Maybe'),
-    ]
     PRIORITY_CHOICES = [
         (1, 'Low'),
         (2, 'Medium'),
@@ -32,7 +39,7 @@ class Task(models.Model):
     parent_task = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, related_name='subtasks')
     review_date = models.DateField(null=True, blank=True)
     due_date = models.DateField(null=True, blank=True)
-    review_stage = models.CharField(max_length=10, choices=REVIEW_STAGES, default='INBOX', null=True, blank=True)
+    review_stage = models.ForeignKey(ReviewStage, on_delete=models.SET_NULL, null=True, blank=True, related_name='tasks')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     completed_at = models.DateTimeField(null=True, blank=True)
