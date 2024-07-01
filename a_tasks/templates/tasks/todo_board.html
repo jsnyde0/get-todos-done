@@ -22,8 +22,7 @@
 {% endblock %}
 
 {% block content %}
-<div class="h-full flex flex-col md:flex-row md:items-start md:overflow-x-auto scrollbar-thin p-4 -mt-4 -ml-4">
-    {% for review_stage in review_stages %}
+<div class="h-full flex flex-col md:flex-row md:items-start overflow-y-auto md:overflow-x-auto scrollbar-thin p-4 -mt-4 -ml-4 relative">    {% for review_stage in review_stages %}
         {% partial kanban_column %}
     {% endfor %}
 
