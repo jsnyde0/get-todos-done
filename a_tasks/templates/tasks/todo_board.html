@@ -75,14 +75,29 @@ id="kanban_column_{{review_stage.slug}}">
             <span class="skeleton-content relative z-10">{{ content }}</span>
         </div>
         {% endpartialdef %}
-        <div id="loading-indicator" class="htmx-indicator">
-            <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-white"></div>
-        </div>
         {% partialdef task_detail_content inline=True %}
-        <div id='task-detail-content'>
-            <h2 class="text-xl font-semibold text-gray-100 mb-4">
+        <div id='task-detail-content' x-data="{ taskCompleted: {% if task.completed %}true{% else %}false{% endif %} }">
+            <div class="flex items-center mb-4">
+                <div class="relative w-8 h-8 mr-3 flex-shrink-0 flex items-center">
+                    <button @click.stop="taskCompleted = !taskCompleted"
+                            hx-swap="none"
+                            class="focus:outline-none w-full h-full flex items-center justify-center rounded-full transition-colors duration-150 group">
+                        <svg x-show="!taskCompleted" class="w-7 h-7 text-gray-400 hover:text-gray-200" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="3" y="3" width="18" height="18" rx="2" ry="2" stroke-width="2"/>
+                        </svg>
+                        <svg x-show="taskCompleted" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 scale-90" x-transition:enter-end="opacity-100 scale-100" class="w-7 h-7 text-green-500 hover:text-green-800" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                        </svg>
+                    </button>
+                </div>
+                <h2 class="text-xl font-semibold flex-grow leading-tight"
+                    x-bind:class="{ 'text-gray-100': !taskCompleted, 'text-gray-500 line-through': taskCompleted }">
+                    {% with content=task.title %}{% partial skeleton_field %}{% endwith %}
+                </h2>
+            </div>
+            {% comment %} <h2 class="text-xl font-semibold text-gray-100 mb-4">
                 {% with content=task.title %}{% partial skeleton_field %}{% endwith %}
-            </h2>
+            </h2> {% endcomment %}
             <div class="flex items-center mb-4">
                 <div class="skeleton-loader relative">
                     <div class="skeleton-glowing-bar absolute inset-0"></div>
