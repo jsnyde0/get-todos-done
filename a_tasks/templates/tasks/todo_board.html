@@ -95,9 +95,6 @@ id="kanban_column_{{review_stage.slug}}">
                     {% with content=task.title %}{% partial skeleton_field %}{% endwith %}
                 </h2>
             </div>
-            {% comment %} <h2 class="text-xl font-semibold text-gray-100 mb-4">
-                {% with content=task.title %}{% partial skeleton_field %}{% endwith %}
-            </h2> {% endcomment %}
             <div class="flex items-center mb-4">
                 <div class="skeleton-loader relative">
                     <div class="skeleton-glowing-bar absolute inset-0"></div>
