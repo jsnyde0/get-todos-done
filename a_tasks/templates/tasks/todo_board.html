@@ -10,7 +10,7 @@ id="kanban_column_{{review_stage.slug}}">
         <div class="task"
         hx-get="{{task.get_absolute_url}}"
         hx-target="#task-detail-content"
-        hx-indicator="#loading-indicator"
+        hx-indicator=".htmx-skeleton-loader"
         @click="taskPaneOpen = true; $event.stopPropagation()">
             {{task.title}}
         </div>
@@ -51,13 +51,11 @@ id="kanban_column_{{review_stage.slug}}">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
             </svg>
         </button>
-        <!-- Loading Indicator -->
-        {% comment %} <div id="loading-indicator" class="absolute inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75 htmx-indicator">
-            <svg class="animate-spin h-12 w-12 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
-            </svg>
-        </div> {% endcomment %}
+        <!-- Skeleton Loader element -->
+        {% partialdef skeleton_field %}
+        <div class="htmx-skeleton-loader"></div>
+        <span class="htmx-content">{{ content }}</span>
+        {% endpartialdef %}
         <div id="loading-indicator" class="htmx-indicator">
             <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-white"></div>
         </div>
@@ -67,8 +65,12 @@ id="kanban_column_{{review_stage.slug}}">
             <div class="flex items-center mb-4">
                 <img class="w-10 h-10 rounded-full mr-3" src="https://via.placeholder.com/40" alt="Assignee Avatar">
                 <div>
-                    <h3 class="text-base font-medium text-gray-200">{{ task.assignee.username }}</h3>
-                    <p class="text-sm text-gray-400">Recently assigned</p>
+                    <h3 class="text-base font-medium text-gray-200">
+                        {% with content=task.assignee.username %}{% partial skeleton_field %}{% endwith %}
+                    </h3>
+                    <p class="text-sm text-gray-400">
+                        {% with content="Recently assigned" %}{% partial skeleton_field %}{% endwith %}
+                    </p>
                 </div>
             </div>
             <div class="mb-4">

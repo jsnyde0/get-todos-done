@@ -35,14 +35,14 @@
         }
 
         /* HTMX styles */
-        .htmx-indicator {
+        .htmx-skeleton-loader {
             @apply hidden
         }
-        .htmx-request .htmx-indicator {
-            @apply absolute inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75
+        .htmx-request .htmx-skeleton-loader {
+            @apply block animate-pulse bg-gray-700 h-4 rounded w-full
         }
-        .htmx-request.htmx-indicator {
-            @apply absolute inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75
+        .htmx-request.htmx-skeleton-loader {
+            @apply block animate-pulse bg-gray-700 h-4 rounded w-full
         }
     </style>
 </head>
