@@ -110,14 +110,20 @@ id="kanban_column_{{review_stage.slug}}">
                 <div class="space-y-2">
                     {% for subtask in task.subtasks.all %}
                     <div class="flex items-center">
-                        <div class="skeleton-loader relative">
+                        <div class="skeleton-loader relative w-full">
                             <div class="skeleton-glowing-bar absolute inset-0"></div>
-                            <span class="skeleton-content relative z-10">
-                                <input type="checkbox" class="form-checkbox h-4 w-4 text-purple-600" checked>
-                                <span class="ml-2 text-base text-gray-200">
-                                    {{subtask.title}}
-                                </span>
-                            </span>
+                            <div class="skeleton-content relative z-10 flex items-center w-full">
+                                <div class="flex-grow flex items-center p-2 bg-gray-700 hover:bg-gray-600 rounded transition-colors duration-100 cursor-pointer"
+                                hx-get="{{subtask.get_absolute_url}}"
+                                hx-target="#task-detail-content"
+                                hx-indicator=".skeleton-loader">
+                                    <input type="checkbox" class="form-checkbox h-4 w-4 text-purple-600 cursor-pointer"
+                                           {% if subtask.completed %}checked{% endif %}>
+                                    <span class="ml-2 text-base text-gray-200 cursor-text hover:bg-gray-800 border-transparent border hover:border-gray-100 p-1 rounded" onclick="event.stopPropagation()">
+                                        {{subtask.title}}
+                                    </span>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     {% endfor %}
