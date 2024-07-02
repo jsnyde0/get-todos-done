@@ -42,11 +42,11 @@
             @apply block;
         }
         .htmx-request.htmx-skeleton-loader>.skeleton-glowing-bar {
-            @apply block animate-pulse bg-gray-700 h-4 rounded w-full;
+            @apply block animate-pulse bg-gray-700 rounded;
         }
-        {% comment %} .htmx-request.htmx-skeleton-loader>.skeleton-content {
-            @apply hidden;
-        } {% endcomment %}
+        .htmx-request.htmx-skeleton-loader>.skeleton-content {
+            @apply invisible;
+        }
     </style>
 </head>
 <body class="h-full flex flex-col bg-gray-900 text-gray-100 overflow-hidden">

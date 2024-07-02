@@ -53,9 +53,9 @@ id="kanban_column_{{review_stage.slug}}">
         </button>
         <!-- Skeleton Loader element -->
         {% partialdef skeleton_field %}
-        <div class="htmx-skeleton-loader">
-            <div class="skeleton-glowing-bar"></div>
-            <span class="skeleton-content">{{ content }}</span>
+        <div class="htmx-skeleton-loader relative">
+            <div class="skeleton-glowing-bar absolute inset-0"></div>
+            <span class="skeleton-content relative z-10">{{ content }}</span>
         </div>
         {% endpartialdef %}
         <div id="loading-indicator" class="htmx-indicator">
@@ -80,10 +80,11 @@ id="kanban_column_{{review_stage.slug}}">
                 <p class="text-base text-gray-200">{{ task.due_date|default:"No due date" }}</p>
             </div>
             <div class="mb-4">
-                <h3 class="text-sm font-medium text-gray-400">Projects</h3>
+                <h3 class="text-sm font-medium text-gray-400">Boards</h3>
                 <div class="flex items-center space-x-2">
-                    <span class="bg-blue-600 text-gray-200 text-xs font-semibold py-1 px-2 rounded-full">Learning</span>
-                    <span class="bg-purple-600 text-gray-200 text-xs font-semibold py-1 px-2 rounded-full">Review Monthly</span>
+                    <span class="bg-blue-600 text-gray-200 text-xs font-semibold py-1 px-2 rounded-full">
+                        {% with content=task.board %}{% partial skeleton_field %}{% endwith %}
+                    </span>
                 </div>
             </div>
             <div class="mb-4">
