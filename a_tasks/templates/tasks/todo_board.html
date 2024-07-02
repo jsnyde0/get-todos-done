@@ -63,7 +63,9 @@ id="kanban_column_{{review_stage.slug}}">
         </div>
         {% partialdef task_detail_content inline=True %}
         <div id='task-detail-content'>
-            <h2 class="text-xl font-semibold text-gray-100 mb-4">{{ task.title }}</h2>
+            <h2 class="text-xl font-semibold text-gray-100 mb-4">
+                {% with content=task.title %}{% partial skeleton_field %}{% endwith %}
+            </h2>
             <div class="flex items-center mb-4">
                 <img class="w-10 h-10 rounded-full mr-3" src="https://via.placeholder.com/40" alt="Assignee Avatar">
                 <div>
@@ -82,27 +84,36 @@ id="kanban_column_{{review_stage.slug}}">
             <div class="mb-4">
                 <h3 class="text-sm font-medium text-gray-400">Boards</h3>
                 <div class="flex items-center space-x-2">
-                    <span class="bg-blue-600 text-gray-200 text-xs font-semibold py-1 px-2 rounded-full">
-                        {% with content=task.board %}{% partial skeleton_field %}{% endwith %}
-                    </span>
+                    <div class="htmx-skeleton-loader relative">
+                        <div class="skeleton-glowing-bar absolute inset-0"></div>
+                        <span class="skeleton-content relative z-10 bg-blue-600 text-gray-200 text-xs font-semibold py-1 px-2 rounded-full">
+                            {{task.board}}
+                        </span>
+                    </div>
                 </div>
             </div>
             <div class="mb-4">
                 <h3 class="text-sm font-medium text-gray-400">Description</h3>
-                <p class="text-base text-gray-200">{{task.description}}
+                <p class="text-base text-gray-200">
+                    {% with content=task.description %}{% partial skeleton_field %}{% endwith %}
                 </p>
             </div>
             <div class="mb-4">
                 <h3 class="text-sm font-medium text-gray-400">Subtasks</h3>
                 <div class="space-y-2">
+                    {% for subtask in task.subtasks.all %}
                     <div class="flex items-center">
-                        <input type="checkbox" class="form-checkbox h-4 w-4 text-purple-600" checked>
-                        <span class="ml-2 text-base text-gray-200">Subtask 1</span>
+                        <div class="htmx-skeleton-loader relative">
+                            <div class="skeleton-glowing-bar absolute inset-0"></div>
+                            <span class="skeleton-content relative z-10">
+                                <input type="checkbox" class="form-checkbox h-4 w-4 text-purple-600" checked>
+                                <span class="ml-2 text-base text-gray-200">
+                                    {{subtask.title}}
+                                </span>
+                            </span>
+                        </div>
                     </div>
-                    <div class="flex items-center">
-                        <input type="checkbox" class="form-checkbox h-4 w-4 text-purple-600" checked>
-                        <span class="ml-2 text-base text-gray-200">Subtask 2</span>
-                    </div>
+                    {% endfor %}
                 </div>
                 <button class="mt-2 text-left text-sm text-purple-400 hover:text-purple-200 transition-colors duration-200">
                     + Add subtask
