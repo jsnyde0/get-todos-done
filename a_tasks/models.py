@@ -79,8 +79,6 @@ class Task(models.Model):
             raise ValidationError("Review stage should only be set for top-level tasks or tasks assigned to a board.")
         
     def save(self, *args, **kwargs):
-        if not self.pk and not self.assignee:  # Only for new tasks without an assignee
-            self.assignee = self.author
         self.full_clean()
         super().save(*args, **kwargs)
 
