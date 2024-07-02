@@ -7,12 +7,37 @@ id="kanban_column_{{review_stage.slug}}">
     <h2 class="text-lg font-semibold p-4 text-gray-100 border-b border-gray-700">{{review_stage.name}}</h2>
     <div class="flex-grow overflow-y-auto scrollbar-thin">
         {% for task in review_stage.tasks.all %}
-        <div class="task"
+        {% comment %} <div class="task"
         hx-get="{{task.get_absolute_url}}"
         hx-target="#task-detail-content"
         hx-indicator=".skeleton-loader"
         @click="taskPaneOpen = true; $event.stopPropagation()">
             {{task.title}}
+        </div> {% endcomment %}
+
+        <div class="task flex items-center p-2 bg-gray-800 hover:bg-gray-700 rounded transition-colors duration-100 cursor-pointer"
+            hx-get="{{task.get_absolute_url}}"
+            hx-target="#task-detail-content"
+            hx-indicator=".skeleton-loader"
+            @click="taskPaneOpen = true; $event.stopPropagation()"
+            x-data="{ taskCompleted: {% if task.completed %}true{% else %}false{% endif %} }">
+            <div class="relative w-6 h-6 mr-2 flex-shrink-0">
+                <button @click.stop="taskCompleted = !taskCompleted"
+                        hx-post="{% url 'tasks:toggle_task_completed' task.id %}"
+                        hx-swap="none"
+                        class="focus:outline-none">
+                    <svg x-show="!taskCompleted" class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="3" y="3" width="18" height="18" rx="2" ry="2" stroke-width="2"/>
+                    </svg>
+                    <svg x-show="taskCompleted" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 scale-90" x-transition:enter-end="opacity-100 scale-100" class="w-5 h-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                    </svg>
+                </button>
+            </div>
+            <span class="flex-grow text-base text-gray-200"
+                x-bind:class="{ 'text-gray-500 line-through': taskCompleted }">
+                {{task.title}}
+            </span>
         </div>
         {% endfor %}
     </div>
