@@ -21,5 +21,6 @@ app_name = 'tasks'
 
 urlpatterns = [
     path('', views.list_view, name='home'),
-    path('<str:id>/', views.view_task, name='view_task'),
+    path('task/<str:id>/', views.view_task, name='view_task'),
+    path('task/<str:id>/complete/', views.toggle_task_completed, name='toggle_task_completed'),
 ]

@@ -39,7 +39,7 @@ id="kanban_column_{{review_stage.slug}}">
     </div>   
 
     <!-- Task Detail Pane -->
-    <div id="task-detail-pane" class="fixed md:top-16 top-16 right-0 bg-gray-800 shadow-lg md:h-[calc(100vh-4rem)] h-[calc(100vh-4rem)] w-full md:w-96 p-4 overflow-y-auto scrollbar-thin" 
+    <div id="task-detail-pane" class="fixed md:top-16 top-16 right-0 bg-gray-900 shadow-lg md:h-[calc(100vh-4rem)] h-[calc(100vh-4rem)] w-full md:w-96 p-4 overflow-y-auto scrollbar-thin" 
     x-show="taskPaneOpen"
     x-on:click.away="taskPaneOpen = false"
     x-on:keydown.escape.window="taskPaneOpen = false"
@@ -113,13 +113,28 @@ id="kanban_column_{{review_stage.slug}}">
                         <div class="skeleton-loader relative w-full">
                             <div class="skeleton-glowing-bar absolute inset-0"></div>
                             <div class="skeleton-content relative z-10 flex items-center w-full">
-                                <div class="flex-grow flex items-center p-2 bg-gray-700 hover:bg-gray-600 rounded transition-colors duration-100 cursor-pointer"
-                                hx-get="{{subtask.get_absolute_url}}"
-                                hx-target="#task-detail-content"
-                                hx-indicator=".skeleton-loader">
-                                    <input type="checkbox" class="form-checkbox h-4 w-4 text-purple-600 cursor-pointer"
-                                           {% if subtask.completed %}checked{% endif %}>
-                                    <span class="ml-2 text-base text-gray-200 cursor-text hover:bg-gray-800 border-transparent border hover:border-gray-100 p-1 rounded" onclick="event.stopPropagation()">
+                                <div class="flex-grow flex items-center p-2 bg-gray-800 hover:bg-gray-700 rounded transition-colors duration-100 cursor-pointer"
+                                     hx-get="{{subtask.get_absolute_url}}"
+                                     hx-target="#task-detail-content"
+                                     hx-indicator=".skeleton-loader"
+                                     x-data="{ taskCompleted: {% if subtask.completed %}true{% else %}false{% endif %} }">
+                                    <div class="relative w-6 h-6 mr-2 flex items-center justify-center">
+                                        <button @click.stop="taskCompleted = !taskCompleted"
+                                                hx-post="{% url 'tasks:toggle_task_completed' subtask.id %}"
+                                                hx-swap="none"
+                                                class="focus:outline-none">
+                                            <svg x-show="!taskCompleted" class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                                <rect x="3" y="3" width="18" height="18" rx="2" ry="2" stroke-width="2"/>
+                                            </svg>
+                                            <svg x-show="taskCompleted" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 scale-90" x-transition:enter-end="opacity-100 scale-100" class="w-5 h-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                            </svg>
+                                        </button>
+                                    </div>
+                                    <span class="ml-2 text-base text-gray-200 cursor-text hover:bg-gray-900 border-transparent border hover:border-gray-100 p-1 rounded"
+                                    onclick="event.stopPropagation()"
+                                    x-bind:class="{ 'text-gray-500': taskCompleted,
+                                    'hover:border-gray-400': taskCompleted }">
                                         {{subtask.title}}
                                     </span>
                                 </div>

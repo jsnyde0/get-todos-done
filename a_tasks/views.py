@@ -1,6 +1,7 @@
 import time
 from django.shortcuts import render, get_object_or_404
-from django.http import HttpResponseBadRequest
+from django.http import HttpResponseBadRequest, HttpResponse
+from django.views.decorators.http import require_POST
 from .models import ReviewStage, Task, Board
 
 # Create your views here.
@@ -24,3 +25,15 @@ def view_task(request, id):
     }
 
     return render(request, 'tasks/todo_board.html#task_detail_content', context)
+
+@require_POST
+def toggle_task_completed(request, id):
+    if not request.htmx:
+        return HttpResponseBadRequest("This view is only accessible via HTMX.")
+    
+    # toggle the completed state of the task
+    task = get_object_or_404(Task, id=id)
+    task.completed = not task.completed
+
+    task.save()
+    return HttpResponse(status=204)  # Return a 204 No Content response
