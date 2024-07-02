@@ -19,4 +19,4 @@ def view_task(request, id):
         'task': task
     }
 
-    return render(request, 'tasks/todo_board.html#task_detail_pane', context)
+    return render(request, 'tasks/todo_board.html#task_detail_content', context)

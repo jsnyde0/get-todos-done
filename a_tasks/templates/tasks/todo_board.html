@@ -7,8 +7,10 @@ id="kanban_column_{{review_stage.slug}}">
     <h2 class="text-lg font-semibold p-4 text-gray-100 border-b border-gray-700">{{review_stage.name}}</h2>
     <div class="flex-grow overflow-y-auto scrollbar-thin">
         {% for task in review_stage.tasks.all %}
-        <div x-on:click="taskPaneOpen = !taskPaneOpen" class="task"
-        hx-get="{{task.get_absolute_url}}">
+        <div class="task"
+        hx-get="{{task.get_absolute_url}}"
+        hx-target="#task-detail-content"
+        @click="taskPaneOpen = true; $event.stopPropagation()">
             {{task.title}}
         </div>
         {% endfor %}
@@ -36,58 +38,63 @@ id="kanban_column_{{review_stage.slug}}">
     </div>   
 
     <!-- Task Detail Pane -->
-    {% partialdef task_detail_pane inline=True %}
-    <div id="task-detail-pane" class="fixed md:top-16 top-16 right-0 bg-gray-800 shadow-lg md:h-[calc(100vh-4rem)] h-[calc(100vh-4rem)] w-full md:w-96 p-4 overflow-y-auto scrollbar-thin"
-    x-show="taskPaneOpen" x-on:click.away="taskPaneOpen = false" x-on:keydown.escape.window="taskPaneOpen = false"
+    <div id="task-detail-pane" class="fixed md:top-16 top-16 right-0 bg-gray-800 shadow-lg md:h-[calc(100vh-4rem)] h-[calc(100vh-4rem)] w-full md:w-96 p-4 overflow-y-auto scrollbar-thin" 
+    x-show="taskPaneOpen"
+    x-on:click.away="taskPaneOpen = false"
+    x-on:keydown.escape.window="taskPaneOpen = false"
+    {% comment %} x-on:htmx:after-settle.window="taskPaneOpen = true" {% endcomment %}
     x-transition:enter="transition ease-out duration-150"
     x-transition:enter-start="opacity-0 transform scale-90 translate-x-96"
     x-transition:enter-end="opacity-100 transform scale-100 translate-x-0">
-        {% comment %} <button class="md:hidden text-gray-100 text-sm mb-4">Close</button> {% endcomment %}
-        <img src="https://img.icons8.com/ios/50/ffffff/multiply.png" alt="Close Icon" class="absolute top-4 right-4 w-10 h-10 cursor-pointer" x-on:click="taskPaneOpen = false">
-        <h2 class="text-xl font-semibold text-gray-100 mb-4">{{ first_task.title }}</h2>
-        <div class="flex items-center mb-4">
-            <img class="w-10 h-10 rounded-full mr-3" src="https://via.placeholder.com/40" alt="Assignee Avatar">
-            <div>
-                <h3 class="text-base font-medium text-gray-200">{{ first_task.assignee.username }}</h3>
-                <p class="text-sm text-gray-400">Recently assigned</p>
-            </div>
-        </div>
-        <div class="mb-4">
-            <h3 class="text-sm font-medium text-gray-400">Due date</h3>
-            <p class="text-base text-gray-200">{{ first_task.due_date|default:"No due date" }}</p>
-        </div>
-        <div class="mb-4">
-            <h3 class="text-sm font-medium text-gray-400">Projects</h3>
-            <div class="flex items-center space-x-2">
-                <span class="bg-blue-600 text-gray-200 text-xs font-semibold py-1 px-2 rounded-full">Learning</span>
-                <span class="bg-purple-600 text-gray-200 text-xs font-semibold py-1 px-2 rounded-full">Review Monthly</span>
-            </div>
-        </div>
-        <div class="mb-4">
-            <h3 class="text-sm font-medium text-gray-400">Description</h3>
-            <p class="text-base text-gray-200">So like awesome pixx, but:
-                <br>Movies instead of Posts
-                <br>You can only see comments/likes of 'friends'
-                <br>Goodreads opzoeken
-            </p>
-        </div>
-        <div class="mb-4">
-            <h3 class="text-sm font-medium text-gray-400">Subtasks</h3>
-            <div class="space-y-2">
-                <div class="flex items-center">
-                    <input type="checkbox" class="form-checkbox h-4 w-4 text-purple-600" checked>
-                    <span class="ml-2 text-base text-gray-200">Subtask 1</span>
-                </div>
-                <div class="flex items-center">
-                    <input type="checkbox" class="form-checkbox h-4 w-4 text-purple-600" checked>
-                    <span class="ml-2 text-base text-gray-200">Subtask 2</span>
+        <button @click="open = false" class="absolute top-4 right-4 text-gray-300 hover:text-white">
+            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+            </svg>
+        </button>
+        {% partialdef task_detail_content inline=True %}
+        <div id='task-detail-content'>
+            <h2 class="text-xl font-semibold text-gray-100 mb-4">{{ task.title }}</h2>
+            <div class="flex items-center mb-4">
+                <img class="w-10 h-10 rounded-full mr-3" src="https://via.placeholder.com/40" alt="Assignee Avatar">
+                <div>
+                    <h3 class="text-base font-medium text-gray-200">{{ task.assignee.username }}</h3>
+                    <p class="text-sm text-gray-400">Recently assigned</p>
                 </div>
             </div>
-            <button class="mt-2 text-left text-sm text-purple-400 hover:text-purple-200 transition-colors duration-200">
-                + Add subtask
-            </button>
+            <div class="mb-4">
+                <h3 class="text-sm font-medium text-gray-400">Due date</h3>
+                <p class="text-base text-gray-200">{{ task.due_date|default:"No due date" }}</p>
+            </div>
+            <div class="mb-4">
+                <h3 class="text-sm font-medium text-gray-400">Projects</h3>
+                <div class="flex items-center space-x-2">
+                    <span class="bg-blue-600 text-gray-200 text-xs font-semibold py-1 px-2 rounded-full">Learning</span>
+                    <span class="bg-purple-600 text-gray-200 text-xs font-semibold py-1 px-2 rounded-full">Review Monthly</span>
+                </div>
+            </div>
+            <div class="mb-4">
+                <h3 class="text-sm font-medium text-gray-400">Description</h3>
+                <p class="text-base text-gray-200">{{task.description}}
+                </p>
+            </div>
+            <div class="mb-4">
+                <h3 class="text-sm font-medium text-gray-400">Subtasks</h3>
+                <div class="space-y-2">
+                    <div class="flex items-center">
+                        <input type="checkbox" class="form-checkbox h-4 w-4 text-purple-600" checked>
+                        <span class="ml-2 text-base text-gray-200">Subtask 1</span>
+                    </div>
+                    <div class="flex items-center">
+                        <input type="checkbox" class="form-checkbox h-4 w-4 text-purple-600" checked>
+                        <span class="ml-2 text-base text-gray-200">Subtask 2</span>
+                    </div>
+                </div>
+                <button class="mt-2 text-left text-sm text-purple-400 hover:text-purple-200 transition-colors duration-200">
+                    + Add subtask
+                </button>
+            </div>
         </div>
+        {% endpartialdef %}
     </div>
-    {% endpartialdef %}
 </div>
 {% endblock %}
