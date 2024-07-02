@@ -35,15 +35,18 @@
         }
 
         /* HTMX styles */
-        .htmx-skeleton-loader {
-            @apply hidden
+        .htmx-skeleton-loader>.skeleton-glowing-bar {
+            @apply hidden;
         }
-        .htmx-request .htmx-skeleton-loader {
-            @apply block animate-pulse bg-gray-700 h-4 rounded w-full
+        .htmx-skeleton-loader>.skeleton-content {
+            @apply block;
         }
-        .htmx-request.htmx-skeleton-loader {
-            @apply block animate-pulse bg-gray-700 h-4 rounded w-full
+        .htmx-request.htmx-skeleton-loader>.skeleton-glowing-bar {
+            @apply block animate-pulse bg-gray-700 h-4 rounded w-full;
         }
+        {% comment %} .htmx-request.htmx-skeleton-loader>.skeleton-content {
+            @apply hidden;
+        } {% endcomment %}
     </style>
 </head>
 <body class="h-full flex flex-col bg-gray-900 text-gray-100 overflow-hidden">

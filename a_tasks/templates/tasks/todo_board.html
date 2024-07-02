@@ -53,8 +53,10 @@ id="kanban_column_{{review_stage.slug}}">
         </button>
         <!-- Skeleton Loader element -->
         {% partialdef skeleton_field %}
-        <div class="htmx-skeleton-loader"></div>
-        <span class="htmx-content">{{ content }}</span>
+        <div class="htmx-skeleton-loader">
+            <div class="skeleton-glowing-bar"></div>
+            <span class="skeleton-content">{{ content }}</span>
+        </div>
         {% endpartialdef %}
         <div id="loading-indicator" class="htmx-indicator">
             <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-white"></div>
