@@ -7,12 +7,14 @@ id="kanban_column_{{review_stage.slug}}">
     <h2 class="text-lg font-semibold p-4 text-gray-100 border-b border-gray-700">{{review_stage.name}}</h2>
     <div class="flex-grow overflow-y-auto scrollbar-thin">
         {% for task in review_stage.tasks.all %}
+        <!-- Task -->
         <div class="task flex items-center p-2 bg-gray-800 hover:bg-gray-700 rounded transition-colors duration-100 cursor-pointer"
             hx-get="{{task.get_absolute_url}}"
             hx-target="#task-detail-content"
             hx-indicator=".skeleton-loader"
             @click="taskPaneOpen = true; $event.stopPropagation()"
             x-data="{ taskCompleted: {% if task.completed %}true{% else %}false{% endif %} }">
+            <!-- Task - Completion Icon -->
             <div class="relative w-6 h-6 mr-2 flex-shrink-0">
                 <button @click.stop="taskCompleted = !taskCompleted"
                         hx-post="{% url 'tasks:toggle_task_completed' task.id %}"
@@ -26,6 +28,7 @@ id="kanban_column_{{review_stage.slug}}">
                     </svg>
                 </button>
             </div>
+            <!-- Task - Title -->
             <span class="flex-grow text-base text-gray-200"
                 x-bind:class="{ 'text-gray-500 line-through': taskCompleted }">
                 {{task.title}}
@@ -47,8 +50,10 @@ id="kanban_column_{{review_stage.slug}}">
 
 {% block content %}
 <div x-data="{ taskPaneOpen: false }" class="h-full p-4 -mt-4 relative overflow-auto">
+    <!-- Kanban Columns -->
     <div class="grid md:grid-flow-col md:auto-cols-max gap-4 md:overflow-x-auto scrollbar-thin p-2">
         {% for review_stage in review_stages %}
+        <!-- Kanban Column -->
             <div class="mx-auto w-full md:w-auto">
                 {% partial kanban_column %}
             </div>
@@ -77,6 +82,7 @@ id="kanban_column_{{review_stage.slug}}">
         {% endpartialdef %}
         {% partialdef task_detail_content inline=True %}
         <div id='task-detail-content' x-data="{ taskCompleted: {% if task.completed %}true{% else %}false{% endif %} }">
+            <!-- Pane header with completion icon and h2 -->
             <div class="flex items-center mb-4">
                 <div class="relative w-8 h-8 mr-3 flex-shrink-0 flex items-center">
                     <button @click.stop="taskCompleted = !taskCompleted"
@@ -95,11 +101,14 @@ id="kanban_column_{{review_stage.slug}}">
                     {% with content=task.title %}{% partial skeleton_field %}{% endwith %}
                 </h2>
             </div>
+            <!-- Assignee with avatar & username -->
             <div class="flex items-center mb-4">
+                <!-- Assignee - avatar -->
                 <div class="skeleton-loader relative">
                     <div class="skeleton-glowing-bar absolute inset-0"></div>
                     <img class="skeleton-content relative z-10 w-10 h-10 rounded-full mr-3" src="https://via.placeholder.com/40" alt="Assignee Avatar">
                 </div>
+                <!-- Assignee - username -->
                 <div>
                     <h3 class="text-base font-medium text-gray-200">
                         {% with content=task.assignee.username %}{% partial skeleton_field %}{% endwith %}
@@ -109,14 +118,15 @@ id="kanban_column_{{review_stage.slug}}">
                     </p>
                 </div>
             </div>
+            <!-- Due Date -->
             <div class="mb-4">
                 <h3 class="text-sm font-medium text-gray-400">Due date</h3>
                 <div class="skeleton-loader relative">
                     <div class="skeleton-glowing-bar absolute inset-0"></div>
                     <p class="skeleton-content relative z-10 text-base text-gray-200">{{ task.due_date|default:"No due date" }}</p>
                 </div>
-                
             </div>
+            <!-- Boards -->
             <div class="mb-4">
                 <h3 class="text-sm font-medium text-gray-400">Boards</h3>
                 <div class="flex items-center space-x-2">
@@ -128,16 +138,19 @@ id="kanban_column_{{review_stage.slug}}">
                     </div>
                 </div>
             </div>
+            <!-- Description -->
             <div class="mb-4">
                 <h3 class="text-sm font-medium text-gray-400">Description</h3>
                 <p class="text-base text-gray-200">
                     {% with content=task.description %}{% partial skeleton_field %}{% endwith %}
                 </p>
             </div>
+            <!-- Subtasks -->
             <div class="mb-4">
                 <h3 class="text-sm font-medium text-gray-400">Subtasks</h3>
                 <div class="space-y-2">
                     {% for subtask in task.subtasks.all %}
+                    <!-- Subtask -->
                     <div class="flex items-center">
                         <div class="skeleton-loader relative w-full">
                             <div class="skeleton-glowing-bar absolute inset-0"></div>
@@ -147,7 +160,8 @@ id="kanban_column_{{review_stage.slug}}">
                                      hx-target="#task-detail-content"
                                      hx-indicator=".skeleton-loader"
                                      x-data="{ taskCompleted: {% if subtask.completed %}true{% else %}false{% endif %} }">
-                                    <div class="relative w-6 h-6 mr-2 flex items-center justify-center">
+                                    <!-- Subtask - Completion Icon -->
+                                     <div class="relative w-6 h-6 mr-2 flex items-center justify-center">
                                         <button @click.stop="taskCompleted = !taskCompleted"
                                                 hx-post="{% url 'tasks:toggle_task_completed' subtask.id %}"
                                                 hx-swap="none"
@@ -160,6 +174,7 @@ id="kanban_column_{{review_stage.slug}}">
                                             </svg>
                                         </button>
                                     </div>
+                                    <!-- Subtask - Title -->
                                     <span class="ml-2 text-base text-gray-200 cursor-text hover:bg-gray-900 border-transparent border hover:border-gray-100 p-1 rounded"
                                     onclick="event.stopPropagation()"
                                     x-bind:class="{ 'text-gray-500 hover:border-gray-400 line-through': taskCompleted }">
