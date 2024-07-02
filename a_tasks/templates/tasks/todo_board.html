@@ -42,7 +42,6 @@ id="kanban_column_{{review_stage.slug}}">
     x-show="taskPaneOpen"
     x-on:click.away="taskPaneOpen = false"
     x-on:keydown.escape.window="taskPaneOpen = false"
-    {% comment %} x-on:htmx:after-settle.window="taskPaneOpen = true" {% endcomment %}
     x-transition:enter="transition ease-out duration-150"
     x-transition:enter-start="opacity-0 transform scale-90 translate-x-96"
     x-transition:enter-end="opacity-100 transform scale-100 translate-x-0">
