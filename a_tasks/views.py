@@ -2,6 +2,7 @@ import time
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponseBadRequest, HttpResponse
 from django.views.decorators.http import require_POST
+from django.utils.timezone import now
 from .models import ReviewStage, Task, Board
 
 # Create your views here.
@@ -34,6 +35,7 @@ def toggle_task_completed(request, id):
     # toggle the completed state of the task
     task = get_object_or_404(Task, id=id)
     task.completed = not task.completed
+    task.completed_at = now() if task.completed else None  # Set or clear the completed_at timestamp
 
     task.save()
     return HttpResponse(status=204)  # Return a 204 No Content response
