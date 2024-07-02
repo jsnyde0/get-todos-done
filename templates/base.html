@@ -33,6 +33,17 @@
         .task {
             @apply bg-gray-800 text-gray-100 hover:bg-gray-500 m-2 p-2 rounded-md shadow-sm hover:shadow-md transition duration-100
         }
+
+        /* HTMX styles */
+        .htmx-indicator {
+            display: none;
+        }
+        .htmx-request .htmx-indicator {
+            display: inline;
+        }
+        .htmx-request.htmx-indicator {
+            display: inline;
+        }
     </style>
 </head>
 <body class="h-full flex flex-col bg-gray-900 text-gray-100 overflow-hidden">
