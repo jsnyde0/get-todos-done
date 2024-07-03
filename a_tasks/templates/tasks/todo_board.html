@@ -239,22 +239,17 @@ id="kanban_column_{{review_stage.slug}}">
             <div class="mb-4">
                 <h3 class="text-sm font-medium text-gray-400">Type</h3>
                 <div class="flex" x-data="{ type: '{{ task.type }}' }">
-                    <button type="button" 
-                            class="flex-1 py-2 px-4 rounded-l-md focus:outline-none" 
+                    <input type="hidden" name="type" x-bind:value="type">
+                    <button type="button"
+                            class="flex-1 py-2 px-4 rounded-l-md focus:outline-none"
                             :class="{ 'bg-purple-600 text-white': type === 'PROJECT', 'bg-gray-700 text-gray-200 hover:bg-purple-700 hover:text-white': type !== 'PROJECT' }"
-                            @click="type = 'PROJECT'"
-                            {% comment %} hx-post="{% url 'tasks:update_type' task.id %}" {% endcomment %}
-                            hx-vals='{"type": "PROJECT"}'
-                            hx-target="#task-detail-content">
+                            @click="type = 'PROJECT'; $nextTick(() => $el.closest('form').dispatchEvent(new Event('change')))">
                         Project
                     </button>
-                    <button type="button" 
-                            class="flex-1 py-2 px-4 rounded-r-md focus:outline-none" 
+                    <button type="button"
+                            class="flex-1 py-2 px-4 rounded-r-md focus:outline-none"
                             :class="{ 'bg-purple-600 text-white': type === 'NEXT_ACTION', 'bg-gray-700 text-gray-200 hover:bg-purple-700 hover:text-white': type !== 'NEXT_ACTION' }"
-                            @click="type = 'NEXT_ACTION'"
-                            {% comment %} hx-post="{% url 'tasks:update_type' task.id %}" {% endcomment %}
-                            hx-vals='{"type": "NEXT_ACTION"}'
-                            hx-target="#task-detail-content">
+                            @click="type = 'NEXT_ACTION'; $nextTick(() => $el.closest('form').dispatchEvent(new Event('change')))">
                         Next Action
                     </button>
                 </div>
