@@ -18,6 +18,9 @@ def view_update_task(request, id):
     if not request.htmx:
         return HttpResponseBadRequest("This view is only accessible via HTMX.")
     
+    # Simulate a delay of 0.5 seconds
+    time.sleep(0.5)
+    
     task = get_object_or_404(Task, id=id)
     form = TaskForm(request.POST or None, instance=task)
     if form.is_valid():
