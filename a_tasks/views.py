@@ -27,9 +27,11 @@ def view_update_task(request, id):
         form.instance.updated_at = now()
         form.save()
 
+    review_stages = ReviewStage.objects.all()
     context = {
         'task': task,
-        'taskform': form
+        'taskform': form,
+        'review_stages': review_stages,
     }
 
     return render(request, 'tasks/todo_board.html#task_update', context)

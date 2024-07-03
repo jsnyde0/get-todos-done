@@ -179,6 +179,22 @@ id="kanban_column_{{review_stage.slug}}">
                     </div>
                 </div>
             </div>
+            <!-- Review Stage -->
+            {% if task.board %}
+            <div class="mb-4">
+                <h3 class="text-sm font-medium text-gray-400">Review Stage</h3>
+                <div class="skeleton-loader relative">
+                    <div class="skeleton-glowing-bar absolute inset-0"></div>
+                    <select name="review_stage" class="skeleton-content relative z-10 bg-gray-800 text-gray-200 p-2 rounded w-full">
+                        {% for stage in review_stages %}
+                            <option value="{{ stage.id }}" {% if task.review_stage.id == stage.id %}selected{% endif %}>
+                                {{ stage.name }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            {% endif %}
             <!-- Description -->
             <div class="mb-4">
                 <h3 class="text-sm font-medium text-gray-400">Description</h3>
