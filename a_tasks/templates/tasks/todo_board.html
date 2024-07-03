@@ -9,7 +9,7 @@ id="kanban_column_{{review_stage.slug}}">
         {% for task in review_stage.tasks.all %}
         <!-- Task -->
         <div class="task flex items-center p-2 bg-gray-800 hover:bg-gray-700 rounded transition-colors duration-100 cursor-pointer"
-            hx-get="{{task.get_absolute_url}}"
+            hx-get="{{task.get_view_update_url}}"
             hx-target="#task-detail-content"
             hx-indicator=".skeleton-loader"
             @click="taskPaneOpen = true; $event.stopPropagation()"
@@ -38,7 +38,7 @@ id="kanban_column_{{review_stage.slug}}">
         {% endfor %}
     </div>
     <button class="w-full text-left p-2 text-gray-400 hover:bg-purple-700 hover:text-gray-100 transition-colors duration-200 rounded">
-        + Add a card
+        + Add a task
     </button>
 </div>
 {% endpartialdef %}
@@ -99,9 +99,10 @@ id="kanban_column_{{review_stage.slug}}">
                         </svg>
                     </button>
                 </div>
+                <!-- Task Title (h2) -->
                 <h2 class="text-xl font-semibold flex-grow leading-tight"
                     x-bind:class="{ 'text-gray-100': !taskCompleted, 'text-gray-500 line-through': taskCompleted }">
-                    {% with content=task.title %}{% partial skeleton_field %}{% endwith %}
+                    {% with content=taskform.title %}{% partial skeleton_field %}{% endwith %}
                 </h2>
             </div>
             <!-- Assignee with avatar & username -->
@@ -109,7 +110,7 @@ id="kanban_column_{{review_stage.slug}}">
                 <!-- Assignee - avatar -->
                 <div class="skeleton-loader relative">
                     <div class="skeleton-glowing-bar absolute inset-0"></div>
-                    <img class="skeleton-content relative z-10 w-10 h-10 rounded-full mr-3" src="https://via.placeholder.com/40" alt="Assignee Avatar">
+                    <img class="skeleton-content relative z-10 w-10 h-10 rounded-full mr-3" src="https://img.icons8.com/material-outlined/48/FFFFFF/user-male-circle.png" alt="Assignee Avatar">
                 </div>
                 <!-- Assignee - username -->
                 <div>
@@ -145,7 +146,7 @@ id="kanban_column_{{review_stage.slug}}">
             <div class="mb-4">
                 <h3 class="text-sm font-medium text-gray-400">Description</h3>
                 <p class="text-base text-gray-200">
-                    {% with content=task.description %}{% partial skeleton_field %}{% endwith %}
+                    {% with content=taskform.description %}{% partial skeleton_field %}{% endwith %}
                 </p>
             </div>
             <!-- Subtasks -->
@@ -159,7 +160,7 @@ id="kanban_column_{{review_stage.slug}}">
                             <div class="skeleton-glowing-bar absolute inset-0"></div>
                             <div class="skeleton-content relative z-10 flex items-center w-full">
                                 <div class="flex-grow flex items-center p-2 bg-gray-800 hover:bg-gray-700 rounded transition-colors duration-100 cursor-pointer"
-                                     hx-get="{{subtask.get_absolute_url}}"
+                                     hx-get="{{subtask.get_view_update_url}}"
                                      hx-target="#task-detail-content"
                                      hx-indicator=".skeleton-loader"
                                      x-data="{ taskCompleted: {% if subtask.completed %}true{% else %}false{% endif %} }">

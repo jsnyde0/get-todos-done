@@ -66,6 +66,9 @@ class Task(models.Model):
 
     def get_absolute_url(self):
         return reverse('tasks:view_task', kwargs={'id': self.id})
+    
+    def get_view_update_url(self):
+        return reverse('tasks:view_update_task', kwargs={'id': self.id})
 
     def __str__(self):
         return self.title

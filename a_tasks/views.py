@@ -4,6 +4,7 @@ from django.http import HttpResponseBadRequest, HttpResponse
 from django.views.decorators.http import require_POST
 from django.utils.timezone import now
 from .models import ReviewStage, Task, Board
+from .forms import TaskForm
 
 # Create your views here.
 def list_view(request):
@@ -12,6 +13,23 @@ def list_view(request):
         'review_stages': review_stages
     }
     return render(request, 'tasks/todo_board.html', context)
+
+def view_update_task(request, id):
+    if not request.htmx:
+        return HttpResponseBadRequest("This view is only accessible via HTMX.")
+    
+    task = get_object_or_404(Task, id=id)
+    form = TaskForm(request.POST or None, instance=task)
+
+    if form.is_valid():
+        pass
+
+    context = {
+        'task': task,
+        'taskform': form
+    }
+
+    return render(request, 'tasks/todo_board.html#task_detail_content', context)
 
 def view_task(request, id):
     if not request.htmx:
