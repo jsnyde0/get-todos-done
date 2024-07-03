@@ -28,10 +28,12 @@ def view_update_task(request, id):
         form.save()
 
     review_stages = ReviewStage.objects.all()
+    boards = Board.objects.all()
     context = {
         'task': task,
         'taskform': form,
         'review_stages': review_stages,
+        'boards': boards,
     }
 
     return render(request, 'tasks/todo_board.html#task_update', context)

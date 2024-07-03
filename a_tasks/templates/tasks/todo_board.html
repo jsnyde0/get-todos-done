@@ -168,17 +168,21 @@ id="kanban_column_{{review_stage.slug}}">
                 </div>
             </div>
             <!-- Boards -->
+            {% if task.board %}
             <div class="mb-4">
-                <h3 class="text-sm font-medium text-gray-400">Boards</h3>
-                <div class="flex items-center space-x-2">
-                    <div class="skeleton-loader relative">
-                        <div class="skeleton-glowing-bar absolute inset-0"></div>
-                        <span class="skeleton-content relative z-10 bg-blue-600 text-gray-200 text-xs font-semibold py-1 px-2 rounded-full">
-                            {{task.board}}
-                        </span>
-                    </div>
+                <h3 class="text-sm font-medium text-gray-400">Board</h3>
+                <div class="skeleton-loader relative">
+                    <div class="skeleton-glowing-bar absolute inset-0"></div>
+                    <select name="board" class="skeleton-content relative z-10 bg-gray-800 text-gray-200 p-2 rounded w-full">
+                        {% for board in boards %}
+                            <option value="{{ board.id }}" {% if task.board.id == board.id %}selected{% endif %}>
+                                {{ board.name }}
+                            </option>
+                        {% endfor %}
+                    </select>
                 </div>
             </div>
+            {% endif %}
             <!-- Review Stage -->
             {% if task.board %}
             <div class="mb-4">
@@ -195,6 +199,20 @@ id="kanban_column_{{review_stage.slug}}">
                 </div>
             </div>
             {% endif %}
+            <!-- Priority -->
+            <div class="mb-4">
+                <h3 class="text-sm font-medium text-gray-400">Priority</h3>
+                <div class="skeleton-loader relative">
+                    <div class="skeleton-glowing-bar absolute inset-0"></div>
+                    <select name="priority" class="skeleton-content relative z-10 bg-gray-800 text-gray-200 p-2 rounded w-full">
+                        {% for value, label in task.PRIORITY_CHOICES %}
+                            <option value="{{ value }}" {% if task.priority == value %}selected{% endif %}>
+                                {{ label }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
             <!-- Description -->
             <div class="mb-4">
                 <h3 class="text-sm font-medium text-gray-400">Description</h3>
