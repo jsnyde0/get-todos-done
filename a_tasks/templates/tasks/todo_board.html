@@ -52,6 +52,13 @@ id="kanban_column_{{review_stage.slug}}">
 </div>
 {% endpartialdef %}
 
+<!-- Skeleton Loader element -->
+{% partialdef skeleton_field %}
+<div class="skeleton-loader relative">
+    <div class="skeleton-glowing-bar absolute inset-0"></div>
+    <span class="skeleton-content relative z-10">{{ content }}</span>
+</div>
+{% endpartialdef %}
 
 {% block content %}
 <div x-data="{ taskPaneOpen: false }" class="h-full p-4 -mt-4 relative overflow-auto">
@@ -78,13 +85,7 @@ id="kanban_column_{{review_stage.slug}}">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
             </svg>
         </button>
-        <!-- Skeleton Loader element -->
-        {% partialdef skeleton_field %}
-        <div class="skeleton-loader relative">
-            <div class="skeleton-glowing-bar absolute inset-0"></div>
-            <span class="skeleton-content relative z-10">{{ content }}</span>
-        </div>
-        {% endpartialdef %}
+        
         {% partialdef task_detail_content inline=True %}
         <form id='task-detail-content' x-data="{ taskCompleted: {% if task.completed %}true{% else %}false{% endif %} }"
         hx-post="{{ task.get_view_update_url }}"
@@ -94,7 +95,21 @@ id="kanban_column_{{review_stage.slug}}">
         {% comment %} hx-ext="debug" {% endcomment %}
         >
             {% csrf_token %}
-            <!-- Pane header with completion icon and h2 -->
+            <!-- Pane Header -->
+             <!-- Parent Task Breadcrumb -->
+             <div class="mb-2 text-sm text-gray-400">
+                {% if task.parent_task %}
+                    <nav class="flex" aria-label="Breadcrumb">
+                        <ol class="inline-flex items-center space-x-1 md:space-x-3">
+                            <li class="inline-flex items-center">
+                                <a href="" hx-get="{{task.parent_task.get_absolute_url}}" class="inline-flex items-center text-sm font-medium text-gray-400 hover:text-purple-400">
+                                    {{ task.parent_task.title }}
+                                </a>
+                            </li>
+                        </ol>
+                    </nav>
+                {% endif %}
+            </div>
             <div class="flex items-center mb-4">
                 <div class="relative w-8 h-8 mr-3 flex-shrink-0 flex items-center">
                     <button @click.stop="taskCompleted = !taskCompleted"
