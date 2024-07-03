@@ -21,6 +21,7 @@ def view_update_task(request, id):
     task = get_object_or_404(Task, id=id)
     form = TaskForm(request.POST or None, instance=task)
     if form.is_valid():
+        form.instance.updated_at = now()
         form.save()
 
     context = {
