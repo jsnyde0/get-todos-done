@@ -11,6 +11,7 @@ id="kanban_column_{{review_stage.slug}}">
         <div class="task flex items-center p-2 bg-gray-800 hover:bg-gray-700 rounded transition-colors duration-100 cursor-pointer"
             hx-get="{{task.get_view_update_url}}"
             hx-target="#task-detail-content"
+            hx-swap="outerHTML"
             hx-indicator=".skeleton-loader"
             @click="taskPaneOpen = true; $event.stopPropagation()"
             x-data="{ taskCompleted: {% if task.completed %}true{% else %}false{% endif %} }">
@@ -82,7 +83,14 @@ id="kanban_column_{{review_stage.slug}}">
         </div>
         {% endpartialdef %}
         {% partialdef task_detail_content inline=True %}
-        <div id='task-detail-content' x-data="{ taskCompleted: {% if task.completed %}true{% else %}false{% endif %} }">
+        <form id='task-detail-content' x-data="{ taskCompleted: {% if task.completed %}true{% else %}false{% endif %} }"
+        hx-post="{{ task.get_view_update_url }}"
+        hx-trigger="change"
+        hx-target="#task-detail-content"
+        hx-swap="outerHTML"
+        {% comment %} hx-ext="debug" {% endcomment %}
+        >
+            {% csrf_token %}
             <!-- Pane header with completion icon and h2 -->
             <div class="flex items-center mb-4">
                 <div class="relative w-8 h-8 mr-3 flex-shrink-0 flex items-center">
