@@ -102,7 +102,9 @@ id="kanban_column_{{review_stage.slug}}">
                     <nav class="flex" aria-label="Breadcrumb">
                         <ol class="inline-flex items-center space-x-1 md:space-x-3">
                             <li class="inline-flex items-center">
-                                <a href="" hx-get="{{task.parent_task.get_absolute_url}}" class="inline-flex items-center text-sm font-medium text-gray-400 hover:text-purple-400">
+                                <a href="" class="inline-flex items-center text-sm font-medium text-gray-400 hover:text-purple-400"
+                                hx-get="{{task.parent_task.get_view_update_url}}"
+                                hx-indicator=".skeleton-loader" >
                                     {{ task.parent_task.title }}
                                 </a>
                             </li>
@@ -195,10 +197,10 @@ id="kanban_column_{{review_stage.slug}}">
                             <div class="skeleton-glowing-bar absolute inset-0"></div>
                             <div class="skeleton-content relative z-10 flex items-center w-full">
                                 <div class="flex-grow flex items-center p-2 bg-gray-800 hover:bg-gray-700 rounded transition-colors duration-100 cursor-pointer"
-                                     hx-get="{{subtask.get_view_update_url}}"
-                                     hx-target="#task-detail-content"
-                                     hx-indicator=".skeleton-loader"
-                                     x-data="{ taskCompleted: {% if subtask.completed %}true{% else %}false{% endif %} }">
+                                    hx-get="{{subtask.get_view_update_url}}"
+                                    hx-target="#task-detail-content"
+                                    hx-indicator=".skeleton-loader"
+                                    x-data="{ taskCompleted: {% if subtask.completed %}true{% else %}false{% endif %} }">
                                     <!-- Subtask - Completion Icon -->
                                      <div class="relative w-6 h-6 mr-2 flex items-center justify-center">
                                         <button @click.stop="taskCompleted = !taskCompleted"
