@@ -28,7 +28,7 @@ def view_update_task(request, id):
         'taskform': form
     }
 
-    return render(request, 'tasks/todo_board.html#task_detail_content', context)
+    return render(request, 'tasks/todo_board.html#task_update', context)
 
 def view_task(request, id):
     if not request.htmx:

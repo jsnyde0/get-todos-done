@@ -1,6 +1,12 @@
 {% extends 'base.html' %}
 {% load partials %}
 
+{% block title %}Getting Todos Done{% endblock %}
+
+{% block header %}
+    {% include 'components/header.html' %}
+{% endblock %}
+
 {% partialdef kanban_column %}
 <div class="bg-gray-800 rounded-lg shadow-lg mb-4 md:mb-0 flex-shrink-0 w-full md:w-80 flex flex-col mr-4 mt-4 md:h-[calc(100vh-10rem)]"
 id="kanban_column_{{review_stage.slug}}">
@@ -31,8 +37,10 @@ id="kanban_column_{{review_stage.slug}}">
                 </button>
             </div>
             <!-- Task - Title -->
-            <span class="flex-grow text-base text-gray-200"
-                x-bind:class="{ 'text-gray-500 line-through': taskCompleted }">
+            <span
+            id="task-title-{{ task.id }}"
+            class="flex-grow text-base text-gray-200"
+            x-bind:class="{ 'text-gray-500 line-through': taskCompleted }">
                 {{task.title}}
             </span>
         </div>
@@ -44,11 +52,6 @@ id="kanban_column_{{review_stage.slug}}">
 </div>
 {% endpartialdef %}
 
-{% block title %}Getting Todos Done{% endblock %}
-
-{% block header %}
-    {% include 'components/header.html' %}
-{% endblock %}
 
 {% block content %}
 <div x-data="{ taskPaneOpen: false }" class="h-full p-4 -mt-4 relative overflow-auto">
@@ -208,3 +211,16 @@ id="kanban_column_{{review_stage.slug}}">
     </div>
 </div>
 {% endblock %}
+
+<!-- Partial used to update both the task pane and the task title in the kanban column when updating a task -->
+
+{% partialdef task_update %}
+    {% partial task_detail_content %}
+
+    <span id="task-title-{{ task.id }}"
+    class="flex-grow text-base text-gray-200"
+    hx-swap-oob="true"
+    x-bind:class="{ 'text-gray-500 line-through': taskCompleted }">
+        {{ task.title }}
+    </span>
+{% endpartialdef %}
