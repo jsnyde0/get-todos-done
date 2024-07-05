@@ -34,7 +34,7 @@ class Task(models.Model):
         ('NEXT_ACTION', 'Next Action'),
     ]
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, unique=True)
-    title = models.CharField(max_length=200)
+    title = models.CharField(max_length=200, blank=True)
     description = models.TextField(blank=True)
     author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='tasks_authored')
     assignee = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='tasks_assigned')
@@ -67,11 +67,11 @@ class Task(models.Model):
     def get_absolute_url(self):
         return reverse('tasks:view_task', kwargs={'id': self.id})
     
-    def get_view_update_url(self):
-        return reverse('tasks:view_update_task', kwargs={'id': self.id})
+    def get_edit_url(self):
+        return reverse('tasks:edit_task', kwargs={'id': self.id})
 
     def __str__(self):
-        return self.title
+        return self.title if self.title else "Untitled Task"
     
     def clean(self):
         if not self.parent_task and not self.review_stage:

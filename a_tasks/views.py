@@ -14,26 +14,46 @@ def list_view(request):
     }
     return render(request, 'tasks/todo_board.html', context)
 
-def view_update_task(request, id):
+def view_create_update_task(request, id=None):
     if not request.htmx:
         return HttpResponseBadRequest("This view is only accessible via HTMX.")
     
     # Simulate a delay of 0.5 seconds
     time.sleep(0.5)
     
-    task = get_object_or_404(Task, id=id)
-    form = TaskForm(request.POST or None, instance=task)
-    if form.is_valid():
-        form.instance.updated_at = now()
-        form.save()
+    
 
-    review_stages = ReviewStage.objects.all()
-    boards = Board.objects.all()
+    # Get or create a task
+    if id:
+        task = get_object_or_404(Task, id=id)
+    else:
+        # For now, set board to 'Default'. This will have to change eventually 
+        board = Board.objects.get(name="Default")
+        review_stage_id = request.GET.get('review_stage')
+        review_stage = ReviewStage.objects.get(id=review_stage_id) if review_stage_id else None
+        print(f"Review stage sent with request: {review_stage}")
+        task = Task.objects.create(
+            author=request.user,
+            board=board,
+            review_stage=review_stage,
+            created_at = now(),
+            )
+    
+    print(f"Task review stage before form: {task.review_stage}")
+    form = TaskForm(request.POST or None, instance=task)
+    print(f"POST data: {request.POST}")
+    if form.is_valid(): # why does it not enter here?
+        form.instance.updated_at = now()
+        task = form.save()
+    else:
+        print("Form is not valid. Errors:", form.errors)
+        print(f"Form data: {form.data}")
+        
+    print(f"Task review stage after form processing: {task.review_stage}")
+
     context = {
         'task': task,
         'taskform': form,
-        'review_stages': review_stages,
-        'boards': boards,
     }
 
     return render(request, 'tasks/todo_board.html#task_update', context)
