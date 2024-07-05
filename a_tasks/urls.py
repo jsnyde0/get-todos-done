@@ -21,6 +21,7 @@ app_name = 'tasks'
 
 urlpatterns = [
     path('', views.list_view, name='home'),
+    path('filter/', views.list_view, name='view_filter'),
     path('task/create/', views.view_create_update_task, name='create_task'),
     path('task/<str:id>/', views.view_create_update_task, name='view_task'),
     path('task/<str:id>/edit/', views.view_create_update_task, name='edit_task'),
