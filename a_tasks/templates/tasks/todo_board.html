@@ -79,7 +79,8 @@ id="kanban_column_{{review_stage.slug}}">
     x-on:keydown.escape.window="taskPaneOpen = false"
     x-transition:enter="transition ease-out duration-150"
     x-transition:enter-start="opacity-0 transform scale-90 translate-x-96"
-    x-transition:enter-end="opacity-100 transform scale-100 translate-x-0">
+    x-transition:enter-end="opacity-100 transform scale-100 translate-x-0"
+    x-cloak>
         <button @click="open = false" class="absolute top-4 right-4 text-gray-300 hover:text-white">
             <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
