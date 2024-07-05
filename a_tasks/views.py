@@ -12,14 +12,23 @@ def list_view(request):
     tasks = Task.objects.all()
 
     # Apply filters
-    boards = request.GET.getlist('boards')
-    tags = request.GET.getlist('tags')
-    completed = request.GET.get('completed')
-    task_type = request.GET.get('type')
-    priority = request.GET.getlist('priority')
+    boards = request.GET.getlist('boards', '')
+    tags = request.GET.getlist('tags', '')
+    completed = request.GET.get('completed', '')
+    task_type = request.GET.get('type', '')
+    priority = request.GET.getlist('priority', '')
 
     if boards:
+        print("boards to filter on: ")
+        for board in boards:
+            print(f'board "{board}"')
+        print("Tasks before filtering on boards")
+        for task in tasks:
+            print(f'task "{task.title}"')
         tasks = tasks.filter(board__in=boards)
+        print("Tasks before filtering on boards")
+        for task in tasks:
+            print(f'task "{task.title}"')
     if tags:
         tasks = tasks.filter(tags__in=tags)
     if completed:
