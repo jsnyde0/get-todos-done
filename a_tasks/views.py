@@ -20,8 +20,6 @@ def view_create_update_task(request, id=None):
     
     # Simulate a delay of 0.5 seconds
     time.sleep(0.5)
-    
-    
 
     # Get or create a task
     if id:
@@ -31,7 +29,6 @@ def view_create_update_task(request, id=None):
         board = Board.objects.get(name="Default")
         review_stage_id = request.GET.get('review_stage')
         review_stage = ReviewStage.objects.get(id=review_stage_id) if review_stage_id else None
-        print(f"Review stage sent with request: {review_stage}")
         task = Task.objects.create(
             author=request.user,
             board=board,
@@ -39,18 +36,11 @@ def view_create_update_task(request, id=None):
             created_at = now(),
             )
     
-    print(f"Task review stage before form: {task.review_stage}")
     form = TaskForm(request.POST or None, instance=task)
-    print(f"POST data: {request.POST}")
     if form.is_valid(): # why does it not enter here?
         form.instance.updated_at = now()
         task = form.save()
-    else:
-        print("Form is not valid. Errors:", form.errors)
-        print(f"Form data: {form.data}")
         
-    print(f"Task review stage after form processing: {task.review_stage}")
-
     context = {
         'task': task,
         'taskform': form,
@@ -84,3 +74,14 @@ def toggle_task_completed(request, id):
 
     task.save()
     return HttpResponse(status=204)  # Return a 204 No Content response
+
+@require_POST
+def update_subtask_title(request, id):
+    subtask = get_object_or_404(Task, id=id)
+    new_title = request.POST.get('title', '').strip()
+    print('new title: ', new_title)
+    if new_title:
+        subtask.title = new_title
+        subtask.save()
+    context={'subtask': subtask}
+    return render(request, 'tasks/todo_board.html#subtask_title_form', context)
