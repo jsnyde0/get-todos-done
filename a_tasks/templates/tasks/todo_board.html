@@ -154,64 +154,29 @@ id="kanban_column_{{review_stage.slug}}">
             <div class="mb-4 flex space-x-4">
                 <div class="flex-1">
                     <h3 class="text-sm font-medium text-gray-400">Review Date</h3>
-                    <div class="skeleton-loader relative">
-                        <div class="skeleton-glowing-bar absolute inset-0"></div>
-                        <input type="date" name="review_date" value="{{ task.review_date|date:'Y-m-d' }}" class="skeleton-content relative z-10 bg-gray-800 text-gray-200 p-2 rounded w-full">
-                    </div>
+                    {% with content=taskform.review_date %}{% partial skeleton_field %}{% endwith %}
                 </div>
                 <div class="flex-1">
                     <h3 class="text-sm font-medium text-gray-400">Due Date</h3>
-                    <div class="skeleton-loader relative">
-                        <div class="skeleton-glowing-bar absolute inset-0"></div>
-                        <input type="date" name="due_date" value="{{ task.due_date|date:'Y-m-d' }}" class="skeleton-content relative z-10 bg-gray-800 text-gray-200 p-2 rounded w-full">
-                    </div>
+                    {% with content=taskform.due_date %}{% partial skeleton_field %}{% endwith %}
                 </div>
             </div>
             <!-- Boards -->
-            {% if task.board %}
             <div class="mb-4">
                 <h3 class="text-sm font-medium text-gray-400">Board</h3>
-                <div class="skeleton-loader relative">
-                    <div class="skeleton-glowing-bar absolute inset-0"></div>
-                    <select name="board" class="skeleton-content relative z-10 bg-gray-800 text-gray-200 p-2 rounded w-full">
-                        {% for board in boards %}
-                            <option value="{{ board.id }}" {% if task.board.id == board.id %}selected{% endif %}>
-                                {{ board.name }}
-                            </option>
-                        {% endfor %}
-                    </select>
-                </div>
+                {% with content=taskform.board %}{% partial skeleton_field %}{% endwith %}
             </div>
-            {% endif %}
             <!-- Review Stage -->
             {% if task.board %}
             <div class="mb-4">
                 <h3 class="text-sm font-medium text-gray-400">Review Stage</h3>
-                <div class="skeleton-loader relative">
-                    <div class="skeleton-glowing-bar absolute inset-0"></div>
-                    <select name="review_stage" class="skeleton-content relative z-10 bg-gray-800 text-gray-200 p-2 rounded w-full">
-                        {% for stage in review_stages %}
-                            <option value="{{ stage.id }}" {% if task.review_stage.id == stage.id %}selected{% endif %}>
-                                {{ stage.name }}
-                            </option>
-                        {% endfor %}
-                    </select>
-                </div>
+                {% with content=taskform.review_stage %}{% partial skeleton_field %}{% endwith %}
             </div>
             {% endif %}
             <!-- Priority -->
             <div class="mb-4">
                 <h3 class="text-sm font-medium text-gray-400">Priority</h3>
-                <div class="skeleton-loader relative">
-                    <div class="skeleton-glowing-bar absolute inset-0"></div>
-                    <select name="priority" class="skeleton-content relative z-10 bg-gray-800 text-gray-200 p-2 rounded w-full">
-                        {% for value, label in task.PRIORITY_CHOICES %}
-                            <option value="{{ value }}" {% if task.priority == value %}selected{% endif %}>
-                                {{ label }}
-                            </option>
-                        {% endfor %}
-                    </select>
-                </div>
+                {% with content=taskform.priority %}{% partial skeleton_field %}{% endwith %}
             </div>
             <!-- Tags -->
             <div class="mb-4">
@@ -238,21 +203,7 @@ id="kanban_column_{{review_stage.slug}}">
             <!-- Type (Project/Next Action)-->
             <div class="mb-4">
                 <h3 class="text-sm font-medium text-gray-400">Type</h3>
-                <div class="flex" x-data="{ type: '{{ task.type }}' }">
-                    <input type="hidden" name="type" x-bind:value="type">
-                    <button type="button"
-                            class="flex-1 py-2 px-4 rounded-l-md focus:outline-none"
-                            :class="{ 'bg-purple-600 text-white': type === 'PROJECT', 'bg-gray-700 text-gray-200 hover:bg-purple-700 hover:text-white': type !== 'PROJECT' }"
-                            @click="type = 'PROJECT'; $nextTick(() => $el.closest('form').dispatchEvent(new Event('change')))">
-                        Project
-                    </button>
-                    <button type="button"
-                            class="flex-1 py-2 px-4 rounded-r-md focus:outline-none"
-                            :class="{ 'bg-purple-600 text-white': type === 'NEXT_ACTION', 'bg-gray-700 text-gray-200 hover:bg-purple-700 hover:text-white': type !== 'NEXT_ACTION' }"
-                            @click="type = 'NEXT_ACTION'; $nextTick(() => $el.closest('form').dispatchEvent(new Event('change')))">
-                        Next Action
-                    </button>
-                </div>
+                {% with content=taskform.type %}{% partial skeleton_field %}{% endwith %}
             </div>
             <!-- Description -->
             <div class="mb-4">
