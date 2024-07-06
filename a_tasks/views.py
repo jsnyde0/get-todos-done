@@ -2,12 +2,14 @@ import time
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponseBadRequest, HttpResponse, HttpResponseRedirect
 from django.views.decorators.http import require_POST
+from django.contrib.auth.decorators import login_required
 from django.utils.timezone import now
 from urllib.parse import urlencode
 from .models import ReviewStage, Task, Board, Tag
 from .forms import TaskForm
 
 # Create your views here.
+@login_required
 def list_view(request):
 
     cleaned_url = clean_filter_url(request)
@@ -97,6 +99,7 @@ def clean_filter_url(request):
     
     return None
 
+@login_required
 def view_create_update_task(request, id=None):
     if not request.htmx:
         return HttpResponseBadRequest("This view is only accessible via HTMX.")
@@ -131,6 +134,7 @@ def view_create_update_task(request, id=None):
 
     return render(request, 'tasks/todo_board.html#task_update', context)
 
+@login_required
 def view_task(request, id):
     if not request.htmx:
         return HttpResponseBadRequest("This view is only accessible via HTMX.")
@@ -145,6 +149,7 @@ def view_task(request, id):
 
     return render(request, 'tasks/todo_board.html#task_detail_content', context)
 
+@login_required
 @require_POST
 def toggle_task_completed(request, id):
     if not request.htmx:
@@ -158,6 +163,7 @@ def toggle_task_completed(request, id):
     task.save()
     return HttpResponse(status=204)  # Return a 204 No Content response
 
+@login_required
 @require_POST
 def update_subtask_title(request, id):
     subtask = get_object_or_404(Task, id=id)
