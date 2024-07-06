@@ -19,16 +19,7 @@ def list_view(request):
     priority = request.GET.getlist('priority', '')
 
     if boards:
-        print("boards to filter on: ")
-        for board in boards:
-            print(f'board "{board}"')
-        print("Tasks before filtering on boards")
-        for task in tasks:
-            print(f'task "{task.title}"')
         tasks = tasks.filter(board__in=boards)
-        print("Tasks before filtering on boards")
-        for task in tasks:
-            print(f'task "{task.title}"')
     if tags:
         tasks = tasks.filter(tags__in=tags)
     if completed:
