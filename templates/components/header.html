@@ -1,20 +1,20 @@
 {% load static %}
 <div class="container mx-auto flex justify-between items-center h-full px-4">
     <div class="flex items-center">
-        <button 
+        {% comment %} <button 
             class="mr-4 bg-gray-700 text-gray-200 hover:bg-purple-700 hover:text-white px-3 py-1 rounded"
         >
             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
             </svg>
-        </button>
+        </button> {% endcomment %}
         <a href="{% url 'tasks:home' %}"><img class="w-auto h-10 mr-3" src="{% static 'img/icons8-tasks-64.png' %}" alt="Getting Tasks Done Logo"></a>
         <h1 class="text-2xl font-bold text-gray-100">My Todos</h1>
     </div>
     <div class="flex items-center space-x-4">
-        <button class="bg-gray-700 text-gray-200 hover:bg-purple-700 hover:text-white px-3 py-1 rounded">Board ▼</button>
-        <button @click="sidebarOpen = !sidebarOpen" class="bg-gray-700 text-gray-200 hover:bg-purple-700 hover:text-white px-3 py-1 rounded">Filters</button>
+        
         {% if user.is_authenticated %}
+        <button @click="sidebarOpen = !sidebarOpen" class="bg-gray-700 text-gray-200 hover:bg-purple-700 hover:text-white px-3 py-1 rounded">Filters</button>
         <button class="bg-gray-700 text-gray-200 hover:bg-purple-700 hover:text-white px-3 py-1 rounded"><a href="{% url 'account_logout' %}">Log Out</a></button>
         {% else %}
         <button class="bg-gray-700 text-gray-200 hover:bg-purple-700 hover:text-white px-3 py-1 rounded"><a href="{% url 'account_login' %}">Log In</a></button>
