@@ -1,3 +1,4 @@
+{% load static %}
 <div class="container mx-auto flex justify-between items-center h-full px-4">
     <div class="flex items-center">
         <button 
@@ -7,6 +8,7 @@
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
             </svg>
         </button>
+        <a href="{% url 'tasks:home' %}"><img class="w-auto h-10 mr-3" src="{% static 'img/icons8-tasks-64.png' %}" alt="Getting Tasks Done Logo"></a>
         <h1 class="text-2xl font-bold text-gray-100">My Todos</h1>
     </div>
     <div class="flex items-center space-x-4">

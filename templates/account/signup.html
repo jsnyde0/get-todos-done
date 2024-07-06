@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load allauth i18n %}
+{% load static %}
 {% block title %}
     Sign Up
 {% endblock %}
@@ -15,7 +16,7 @@
             {% csrf_token %}
             {{ redirect_field }}
             <div class="flex justify-center mb-6">
-                <img class="w-auto h-10" src="https://merakiui.com/images/logo.svg" alt="">
+                <img class="w-auto h-10" src="{% static 'img/icons8-tasks-64.png' %}" alt="Getting Tasks Done Logo">
             </div>
             
             <div class="flex items-center justify-center mb-6">
