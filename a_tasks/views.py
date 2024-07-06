@@ -1,13 +1,19 @@
 import time
 from django.shortcuts import render, get_object_or_404
-from django.http import HttpResponseBadRequest, HttpResponse
+from django.http import HttpResponseBadRequest, HttpResponse, HttpResponseRedirect
 from django.views.decorators.http import require_POST
 from django.utils.timezone import now
+from urllib.parse import urlencode
 from .models import ReviewStage, Task, Board, Tag
 from .forms import TaskForm
 
 # Create your views here.
 def list_view(request):
+
+    cleaned_url = clean_filter_url(request)
+    if cleaned_url:
+        return HttpResponseRedirect(cleaned_url)
+
     review_stages = ReviewStage.objects.all()
     tasks = Task.objects.all()
 
@@ -70,6 +76,26 @@ def list_view(request):
     if request.htmx:
         return render(request, 'tasks/todo_board.html#kanban_board', context)
     return render(request, 'tasks/todo_board.html', context)
+
+def clean_filter_url(request):
+    cleaned_params = {}
+    for key, values in request.GET.lists():
+        # Filter out empty values
+        clean_values = [v for v in values if v]
+        if clean_values:
+            if len(clean_values) > 1:
+                cleaned_params[key] = clean_values
+            else:
+                cleaned_params[key] = clean_values[0]
+    
+    if len(cleaned_params) < len(request.GET):
+        base_url = request.path
+        if cleaned_params:
+            return f"{base_url}?{urlencode(cleaned_params, doseq=True)}"
+        else:
+            return base_url
+    
+    return None
 
 def view_create_update_task(request, id=None):
     if not request.htmx:

@@ -13,8 +13,11 @@
             </button>
         </div>
         
-        <form hx-get="{% url 'tasks:view_filter' %}" hx-target="#kanban-board" hx-trigger="change, submit">
-            {% csrf_token %}
+        <form hx-get="{% url 'tasks:view_filter' %}"
+        hx-target="#kanban-board"
+        hx-trigger="change, submit"
+        hx-push-url="true"
+        >
             <!-- Boards Filter -->
             <div class="mb-4">
                 <h3 class="text-lg font-medium mb-2">Boards</h3>
