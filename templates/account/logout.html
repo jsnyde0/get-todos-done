@@ -1,25 +1,44 @@
-{% extends "account/base_manage.html" %}
+{% extends "base.html" %}
 {% load allauth i18n %}
-{% block head_title %}
+{% load static %}
+
+{% block title %}
     {% trans "Sign Out" %}
-{% endblock head_title %}
+{% endblock %}
+
 {% block content %}
-    {% element h1 %}
-        {% trans "Sign Out" %}
-    {% endelement %}
-    {% element p %}
-        {% trans 'Are you sure you want to sign out?' %}
-    {% endelement %}
-    {% url 'account_logout' as action_url %}
-    {% element form method="post" action=action_url no_visible_fields=True %}
-        {% slot body %}
-            {% csrf_token %}
-            {{ redirect_field }}
-        {% endslot %}
-        {% slot actions %}
-            {% element button type="submit" %}
-                {% trans 'Sign Out' %}
-            {% endelement %}
-        {% endslot %}
-    {% endelement %}
+{% url 'account_logout' as action_url %}
+
+<header class="bg-gray-800 border-b border-gray-700 h-16 flex-shrink-0 z-50">
+    {% include 'components/header.html' %}
+</header>
+
+<section class="bg-gray-900 min-h-screen flex items-center justify-center px-6">
+    <div class="w-full max-w-md animate-fade-in-up">
+        <div class="bg-gray-800 shadow-lg rounded-lg p-8 text-center">
+            <div class="flex justify-center mb-6">
+                <img class="w-auto h-10" src="{% static 'img/icons8-tasks-64.png' %}" alt="Getting Tasks Done Logo">
+            </div>
+            
+            <h1 class="text-2xl font-bold text-gray-100 mb-4">{% trans "Sign Out" %}</h1>
+            
+            <p class="text-gray-300 mb-6">{% trans 'Are you sure you want to sign out?' %}</p>
+            
+            <form method="post" action="{{ action_url }}">
+                {% csrf_token %}
+                {{ redirect_field }}
+                
+                <button type="submit" class="w-full px-6 py-3 text-sm font-medium tracking-wide text-white capitalize transition-colors duration-300 transform bg-purple-600 rounded-lg hover:bg-purple-500 focus:outline-none focus:ring focus:ring-purple-300 focus:ring-opacity-50">
+                    {% trans 'Sign Out' %}
+                </button>
+            </form>
+
+            <div class="mt-6">
+                <a href="{% url 'tasks:home' %}" class="text-sm text-purple-400 hover:underline">
+                    {% trans "Changed your mind? Go back" %}
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
 {% endblock content %}
