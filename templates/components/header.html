@@ -12,6 +12,11 @@
     <div class="flex items-center space-x-4">
         <button class="bg-gray-700 text-gray-200 hover:bg-purple-700 hover:text-white px-3 py-1 rounded">Board ▼</button>
         <button @click="sidebarOpen = !sidebarOpen" class="bg-gray-700 text-gray-200 hover:bg-purple-700 hover:text-white px-3 py-1 rounded">Filters</button>
-        <button class="bg-gray-700 text-gray-200 hover:bg-purple-700 hover:text-white px-3 py-1 rounded">Share</button>
+        {% if user.is_authenticated %}
+        <button class="bg-gray-700 text-gray-200 hover:bg-purple-700 hover:text-white px-3 py-1 rounded"><a href="{% url 'account_logout' %}">Log Out</a></button>
+        {% else %}
+        <button class="bg-gray-700 text-gray-200 hover:bg-purple-700 hover:text-white px-3 py-1 rounded"><a href="{% url 'account_login' %}">Log In</a></button>
+        <button class="bg-gray-700 text-gray-200 hover:bg-purple-700 hover:text-white px-3 py-1 rounded"><a href="{% url 'account_signup' %}">Sign Up</a></button>
+        {% endif %}
     </div>
 </div>
