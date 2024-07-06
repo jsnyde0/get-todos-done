@@ -15,6 +15,7 @@ id="kanban_column_{{review_stage.slug}}">
             hx-target="#task-detail-content"
             hx-swap="outerHTML"
             hx-indicator=".skeleton-loader"
+            hx-push-url="true"
             @click="taskPaneOpen = true; $event.stopPropagation()"
             x-data="{ taskCompleted: {% if task.completed %}true{% else %}false{% endif %} }">
             <!-- Task - Completion Icon -->
@@ -48,6 +49,7 @@ id="kanban_column_{{review_stage.slug}}">
     hx-target="#task-detail-content"
     hx-swap="outerHTML"
     hx-indicator=".skeleton-loader"
+    hx-push-url="true"
     @click="taskPaneOpen = true; $event.stopPropagation()"
     x-data="{ taskCompleted: {% if task.completed %}true{% else %}false{% endif %} }">
         + Add a task
