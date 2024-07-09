@@ -19,7 +19,7 @@ def create_default_boards(user):
     for board_name in default_boards:
         Board.objects.get_or_create(name=board_name, defaults={'user': user})
 
-def create_default_review_stages(user):
+def create_default_review_stages():
     default_stages = [
         ('Inbox', 1),
         ('Review Daily', 2),
@@ -31,7 +31,7 @@ def create_default_review_stages(user):
         ('Maybe', 8)
     ]
     for stage_name, order in default_stages:
-        ReviewStage.objects.get_or_create(name=stage_name, defaults={'order': order, 'user': user})
+        ReviewStage.objects.get_or_create(name=stage_name, defaults={'order': order})
 
 def main():
     # Run migrations
@@ -62,7 +62,7 @@ def main():
 
     # Create default boards and review stages
     create_default_boards(user=first_user)
-    create_default_review_stages(user=first_user)
+    create_default_review_stages()
 
     print("Predeploy tasks completed successfully!")
 
