@@ -34,6 +34,8 @@ DEBUG = env('DEBUG_OVERRIDE')=='True'
 
 ALLOWED_HOSTS = env.list('ALLOWED_HOSTS')
 
+CSRF_TRUSTED_ORIGINS = env.list('CSRF_TRUSTED_ORIGINS', default=[])
+
 INTERNAL_IPS = (
     '127.0.0.1',
     'localhost:8000'
