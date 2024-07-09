@@ -11,19 +11,26 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
 from pathlib import Path
+from environ import Env
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+# Initialize environ
+env = Env()
+
+# Read .env file
+Env.read_env(env_file=Path(__file__).resolve().parent.parent / '.env')
 
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-d!ggto7=gs=8bl0)%^5wxt5nf41bp+72#5@x!ny#=zq^3*j&q('
+SECRET_KEY = env('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = env('DEBUG_OVERRIDE')=='True'
 
 ALLOWED_HOSTS = []
 
@@ -43,6 +50,7 @@ INSTALLED_APPS = [
     'django_htmx',
     'allauth',
     'allauth.account',
+    'admin_honeypot',
     # own apps
     'a_tasks',
 ]
