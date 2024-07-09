@@ -33,11 +33,23 @@ def create_default_review_stages():
     for stage_name, order in default_stages:
         ReviewStage.objects.get_or_create(name=stage_name, defaults={'order': order})
 
+import logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
 def main():
-    # Run migrations
-    call_command('makemigrations')
-    call_command('migrate', 'sites')  # Migrate sites app specifically
-    call_command('migrate')  # Run all other migrations
+    try:
+        logger.info("Starting migrations...")
+        call_command('makemigrations')
+        call_command('migrate')
+        logger.info("Migrations completed successfully.")
+
+        # ... (rest of the function)
+
+        logger.info("All predeploy tasks completed successfully!")
+    except Exception as e:
+        logger.error(f"An error occurred during predeploy: {str(e)}")
+        raise  # Re-raise the exception to ensure the deploy fails if there's an error
     
 
     # Create superuser if it doesn't exist
