@@ -1,12 +1,15 @@
 import time
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
+from django.urls import reverse
 from django.http import HttpResponseBadRequest, HttpResponse, HttpResponseRedirect
 from django.views.decorators.http import require_POST
 from django.contrib.auth.decorators import login_required
 from django.utils.timezone import now
+from django.contrib import messages
 from urllib.parse import urlencode
 from .models import ReviewStage, Task, Board, Tag
 from .forms import TaskForm
+from .utils import clean_filter_url
 
 # Create your views here.
 @login_required
@@ -79,30 +82,12 @@ def list_view(request):
         return render(request, 'tasks/todo_board.html#kanban_board', context)
     return render(request, 'tasks/todo_board.html', context)
 
-def clean_filter_url(request):
-    cleaned_params = {}
-    for key, values in request.GET.lists():
-        # Filter out empty values
-        clean_values = [v for v in values if v]
-        if clean_values:
-            if len(clean_values) > 1:
-                cleaned_params[key] = clean_values
-            else:
-                cleaned_params[key] = clean_values[0]
-    
-    if len(cleaned_params) < len(request.GET):
-        base_url = request.path
-        if cleaned_params:
-            return f"{base_url}?{urlencode(cleaned_params, doseq=True)}"
-        else:
-            return base_url
-    
-    return None
 
 @login_required
 def view_create_update_task(request, id=None):
     if not request.htmx:
-        return HttpResponseBadRequest("This view is only accessible via HTMX.")
+        messages.info(request, 'View only accessible via HTMX... redirected to homepage.')
+        return redirect(reverse('posts:home'))
     
     # Simulate a delay of 0.5 seconds
     time.sleep(0.5)
@@ -137,7 +122,8 @@ def view_create_update_task(request, id=None):
 @login_required
 def view_task(request, id):
     if not request.htmx:
-        return HttpResponseBadRequest("This view is only accessible via HTMX.")
+        messages.info(request, 'View only accessible via HTMX... redirected to homepage.')
+        return redirect(reverse('posts:home'))
     
     # Simulate a delay of 0.5 seconds
     time.sleep(0.5)
@@ -153,7 +139,8 @@ def view_task(request, id):
 @require_POST
 def toggle_task_completed(request, id):
     if not request.htmx:
-        return HttpResponseBadRequest("This view is only accessible via HTMX.")
+        messages.info(request, 'View only accessible via HTMX... redirected to homepage.')
+        return redirect(reverse('posts:home'))
     
     # toggle the completed state of the task
     task = get_object_or_404(Task, id=id)
