@@ -111,10 +111,11 @@ WSGI_APPLICATION = 'a_core.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
-if DEBUG:
-    DB_NAME = BASE_DIR / 'db.sqlite3'
-else:
-    DB_NAME = os.path.join('/data', 'db.sqlite3')  # the mounted disk path
+# if DEBUG:
+#     DB_NAME = BASE_DIR / 'db.sqlite3'
+# else:
+#     DB_NAME = os.path.join('/data', 'db.sqlite3')  # the mounted disk path
+DB_NAME = BASE_DIR / 'db.sqlite3'
 
 logger.info(f"Using database at: {DB_NAME}")
 
