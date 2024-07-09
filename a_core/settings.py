@@ -13,6 +13,9 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 import os
 from pathlib import Path
 from environ import Env
+import logging
+
+logger = logging.getLogger(__name__)
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -112,6 +115,8 @@ if DEBUG:
     DB_NAME = BASE_DIR / 'db.sqlite3'
 else:
     DB_NAME = os.path.join('/data', 'db.sqlite3')  # the mounted disk path
+
+logger.info(f"Using database at: {DB_NAME}")
 
 DATABASES = {
     'default': {

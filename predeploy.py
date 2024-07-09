@@ -33,11 +33,36 @@ def create_default_review_stages():
     for stage_name, order in default_stages:
         ReviewStage.objects.get_or_create(name=stage_name, defaults={'order': order})
 
+from django.db import connection
 import logging
+import time
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
+def check_database():
+    db_path = settings.DATABASES['default']['NAME']
+    logger.info(f"Checking database at: {db_path}")
+    
+    if os.path.exists(db_path):
+        logger.info(f"Database file exists. Size: {os.path.getsize(db_path)} bytes")
+        # Check if it's readable and writable
+        if os.access(db_path, os.R_OK | os.W_OK):
+            logger.info("Database file is readable and writable")
+        else:
+            logger.warning("Database file permissions issue")
+    else:
+        logger.warning(f"Database file does not exist at {db_path}")
+        # Try to create an empty file
+        try:
+            open(db_path, 'a').close()
+            logger.info("Created an empty database file")
+        except Exception as e:
+            logger.error(f"Failed to create database file: {str(e)}")
+
 def main():
+    logger.info("Waiting for 5 seconds before running migrations...")
+    time.sleep(5)
+
     try:
         logger.info("Starting migrations...")
         call_command('makemigrations')
@@ -51,6 +76,13 @@ def main():
         logger.error(f"An error occurred during predeploy: {str(e)}")
         raise  # Re-raise the exception to ensure the deploy fails if there's an error
     
+    # Perform a simple database query to ensure it's accessible
+    with connection.cursor() as cursor:
+        cursor.execute("SELECT 1")
+        result = cursor.fetchone()
+        logger.info(f"Database check result: {result}")
+
+    check_database()
 
     # Create superuser if it doesn't exist
     User = get_user_model()
