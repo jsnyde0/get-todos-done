@@ -36,7 +36,9 @@ def create_default_review_stages():
 def main():
     # Run migrations
     call_command('makemigrations')
-    call_command('migrate')
+    call_command('migrate', 'sites')  # Migrate sites app specifically
+    call_command('migrate')  # Run all other migrations
+    
 
     # Create superuser if it doesn't exist
     User = get_user_model()
@@ -55,10 +57,11 @@ def main():
         return
 
     # Create or update Site object
-    Site.objects.update_or_create(
+    Site.objects.get_or_create(
         id=1,
-        defaults={'domain': 'get-tasks-done.onrender.com', 'name': 'Get Tasks Done'}
+        defaults={'domain': 'gettingtasksdone.com', 'name': 'Getting Tasks Done'}
     )
+    
 
     # Create default boards and review stages
     create_default_boards(user=first_user)
