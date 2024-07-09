@@ -39,6 +39,29 @@ import time
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
+def check_database_path():
+    db_path = settings.DATABASES['default']['NAME']
+    expected_path = '/data/db.sqlite3'
+    
+    print(f"Current database path: {db_path}")
+    print(f"Expected database path: {expected_path}")
+    
+    if db_path != expected_path:
+        print("WARNING: Database path does not match expected path!")
+        
+        # Attempt to create the correct directory if it doesn't exist
+        os.makedirs('/data', exist_ok=True)
+        
+        # Attempt to move the database file if it exists
+        if os.path.exists(db_path):
+            import shutil
+            shutil.move(db_path, expected_path)
+            print(f"Moved database from {db_path} to {expected_path}")
+        
+        # Update the database path in Django settings
+        settings.DATABASES['default']['NAME'] = expected_path
+        print("Updated Django settings with correct database path")
+
 def check_database():
     db_path = settings.DATABASES['default']['NAME']
     logger.info(f"Checking database at: {db_path}")
@@ -60,6 +83,8 @@ def check_database():
             logger.error(f"Failed to create database file: {str(e)}")
 
 def main():
+    check_database_path()
+    
     logger.info("Waiting for 5 seconds before running migrations...")
     time.sleep(5)
 
