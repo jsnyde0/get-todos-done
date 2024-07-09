@@ -87,7 +87,7 @@ def list_view(request):
 def view_create_update_task(request, id=None):
     if not request.htmx:
         messages.info(request, 'View only accessible via HTMX... redirected to homepage.')
-        return redirect(reverse('posts:home'))
+        return redirect(reverse('tasks:home'))
     
     # Simulate a delay of 0.5 seconds
     time.sleep(0.5)
@@ -123,7 +123,7 @@ def view_create_update_task(request, id=None):
 def view_task(request, id):
     if not request.htmx:
         messages.info(request, 'View only accessible via HTMX... redirected to homepage.')
-        return redirect(reverse('posts:home'))
+        return redirect(reverse('tasks:home'))
     
     # Simulate a delay of 0.5 seconds
     time.sleep(0.5)
@@ -140,7 +140,7 @@ def view_task(request, id):
 def toggle_task_completed(request, id):
     if not request.htmx:
         messages.info(request, 'View only accessible via HTMX... redirected to homepage.')
-        return redirect(reverse('posts:home'))
+        return redirect(reverse('tasks:home'))
     
     # toggle the completed state of the task
     task = get_object_or_404(Task, id=id)
