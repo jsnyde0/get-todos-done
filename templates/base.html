@@ -96,9 +96,31 @@
         .allauth-form-button {
             @apply w-full px-6 py-3 text-sm font-medium tracking-wide text-white capitalize transition-colors duration-300 transform bg-purple-600 rounded-lg hover:bg-purple-500 focus:outline-none focus:ring focus:ring-purple-300 focus:ring-opacity-50;
         }
+
+        /* Style Messages */
+        .message {
+            @apply text-white text-center;
+        }
+        .message.debug {
+            @apply bg-gray-600 border-gray-700;
+        }
+        .message.info {
+            @apply bg-blue-600 border-blue-700;
+        }
+        .message.success {
+            @apply bg-green-600 border-green-700;
+        }
+        .message.warning {
+            @apply bg-yellow-600 border-yellow-700;
+        }
+        .message.error {
+            @apply bg-red-600 border-red-700;
+        }
     </style>
 </head>
 <body class="h-full flex flex-col bg-gray-900 text-gray-100 overflow-hidden">
+
+    {% include 'components/messages.html' %}
 
     <main class="flex-grow overflow-hidden">
         {% block content %}
