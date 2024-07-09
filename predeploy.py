@@ -14,12 +14,12 @@ from django.contrib.sites.models import Site
 from django.conf import settings
 from a_tasks.models import Board, ReviewStage
 
-def create_default_boards():
+def create_default_boards(user):
     default_boards = ['Personal', 'Learning', 'Default']
     for board_name in default_boards:
-        Board.objects.get_or_create(name=board_name, defaults={'user': None})
+        Board.objects.get_or_create(name=board_name, defaults={'user': user})
 
-def create_default_review_stages():
+def create_default_review_stages(user):
     default_stages = [
         ('Inbox', 1),
         ('Review Daily', 2),
@@ -31,7 +31,7 @@ def create_default_review_stages():
         ('Maybe', 8)
     ]
     for stage_name, order in default_stages:
-        ReviewStage.objects.get_or_create(name=stage_name, defaults={'order': order})
+        ReviewStage.objects.get_or_create(name=stage_name, defaults={'order': order, 'user': user})
 
 def main():
     # Run migrations
@@ -40,12 +40,19 @@ def main():
 
     # Create superuser if it doesn't exist
     User = get_user_model()
-    if not User.objects.filter(username=settings.SUPERUSER_USERNAME).exists():
-        User.objects.create_superuser(
-            settings.SUPERUSER_USERNAME,
-            settings.SUPERUSER_EMAIL,
-            settings.SUPERUSER_PASSWORD
-        )
+    try:
+        if not User.objects.filter(username=settings.SUPERUSER_USERNAME).exists():
+            User.objects.create_superuser(
+                settings.SUPERUSER_USERNAME,
+                settings.SUPERUSER_EMAIL,
+                settings.SUPERUSER_PASSWORD
+            )
+        first_user = User.objects.first()
+        if not first_user:
+            raise Exception("No users found in the database")
+    except Exception as e:
+        print(f"Error setting up user: {e}")
+        return
 
     # Create or update Site object
     Site.objects.update_or_create(
@@ -54,8 +61,8 @@ def main():
     )
 
     # Create default boards and review stages
-    create_default_boards()
-    create_default_review_stages()
+    create_default_boards(user=first_user)
+    create_default_review_stages(user=first_user)
 
     print("Predeploy tasks completed successfully!")
 
