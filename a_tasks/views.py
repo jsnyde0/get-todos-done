@@ -93,15 +93,22 @@ def view_create_update_task(request, id=None):
     time.sleep(0.5)
 
     # Get or create a task
+    creating_subtask = False
     if id:
         task = get_object_or_404(Task, id=id)
-    else:
-        # For now, set board to 'Default'. This will have to change eventually 
-        board = Board.objects.get(name="Default")
-        review_stage_id = request.GET.get('review_stage')
+    else:        
+        # If we're creating a parent task, we'll have a review_stage_id
+        review_stage_id = request.GET.get('review_stage', '')
         review_stage = ReviewStage.objects.get(id=review_stage_id) if review_stage_id else None
+        board = Board.objects.get(name="Default") if review_stage_id else None
+        # If we're creating a subtask, we'll have a parent_task_id
+        parent_task_id = request.GET.get('parent_task_id', '') # in case we're creating a subtask 
+        parent_task = Task.objects.get(id=parent_task_id) if parent_task_id else None
+        # saving this boolean for choosing the right template later
+        creating_subtask = True if parent_task_id else False
         task = Task.objects.create(
             author=request.user,
+            parent_task=parent_task,
             board=board,
             review_stage=review_stage,
             created_at = now(),
@@ -117,7 +124,20 @@ def view_create_update_task(request, id=None):
         'taskform': form,
     }
 
-    return render(request, 'tasks/todo_board.html#task_update', context)
+    if creating_subtask:
+        template = 'tasks/todo_board.html#subtask'
+        context = {
+            'subtask': task
+        }
+    else:
+        template = 'tasks/todo_board.html#task_update'
+        context = {
+            'task': task,
+            'taskform': form,
+        }
+        
+
+    return render(request, template, context)
 
 @login_required
 def view_task(request, id):

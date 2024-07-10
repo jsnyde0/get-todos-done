@@ -236,9 +236,10 @@ id="kanban_column_{{review_stage.slug}}">
                 <!-- Subtasks -->
                 <div class="mb-4">
                     <h3 class="text-sm font-medium text-gray-400">Subtasks</h3>
-                    <div class="space-y-2">
+                    <div id='subtasks-container' class="space-y-2">
                         {% for subtask in task.subtasks.all %}
                         <!-- Subtask -->
+                        {% partialdef subtask inline=True %}
                         <div class="flex items-center">
                             <div class="skeleton-loader relative w-full">
                                 <div class="skeleton-glowing-bar absolute inset-0"></div>
@@ -286,9 +287,14 @@ id="kanban_column_{{review_stage.slug}}">
                                 </div>
                             </div>
                         </div>
+                        {% endpartialdef %}
                         {% endfor %}
                     </div>
-                    <button class="mt-2 text-left text-sm text-purple-400 hover:text-purple-200 transition-colors duration-200">
+                    <button class="mt-2 text-left text-sm text-purple-400 hover:text-purple-200 transition-colors duration-200"
+                    hx-get="{% url 'tasks:create_task' %}"
+                    hx-vals='{"parent_task_id": "{{task.id}}"}'
+                    hx-target="#subtasks-container"
+                    hx-swap="beforeend">
                         + Add subtask
                     </button>
                 </div>
