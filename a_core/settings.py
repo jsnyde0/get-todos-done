@@ -10,10 +10,10 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
-import os
 from pathlib import Path
 from environ import Env
 import logging
+import dj_database_url
 
 logger = logging.getLogger(__name__)
 
@@ -125,6 +125,10 @@ DATABASES = {
         'NAME': DB_NAME,
     }
 }
+
+FORCE_POSTGRES = env.bool('FORCE_POSTGRES')
+if not DEBUG or FORCE_POSTGRES:
+    DATABASES['default'] = dj_database_url.parse(env('DATABASE_URL'))
 
 
 # Password validation
