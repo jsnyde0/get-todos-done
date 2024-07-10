@@ -159,6 +159,10 @@ AUTHENTICATION_BACKENDS = [
 
 LOGIN_REDIRECT_URL='/'
 
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_EMAIL_VERIFICATION = 'optional'
+
 # Internationalization
 # https://docs.djangoproject.com/en/5.0/topics/i18n/
 
