@@ -6,7 +6,6 @@ from django.views.decorators.http import require_POST
 from django.contrib.auth.decorators import login_required
 from django.utils.timezone import now
 from django.contrib import messages
-from urllib.parse import urlencode
 from .models import ReviewStage, Task, Board, Tag
 from .forms import TaskForm
 from .utils import clean_filter_url
@@ -25,7 +24,7 @@ def list_view(request):
     # Apply filters
     boards = request.GET.getlist('boards', '')
     tags = request.GET.getlist('tags', '')
-    completed = request.GET.get('completed', '')
+    completed = request.GET.get('completed', 'false')
     task_type = request.GET.get('type', '')
     priority = request.GET.getlist('priority', '')
 
