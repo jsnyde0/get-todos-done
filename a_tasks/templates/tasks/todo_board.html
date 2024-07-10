@@ -104,7 +104,6 @@ id="kanban_column_{{review_stage.slug}}">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
                 </svg>
             </button>
-            
             {% partialdef task_detail_content inline=True %}
             <div id='task-detail-content'> 
                 <form x-data="{ taskCompleted: {% if task.completed %}true{% else %}false{% endif %} }"
@@ -296,6 +295,19 @@ id="kanban_column_{{review_stage.slug}}">
                     hx-target="#subtasks-container"
                     hx-swap="beforeend">
                         + Add subtask
+                    </button>
+                </div>
+                <!-- Move the delete button here, after all other form fields -->
+                <div class="mt-6">
+                    <button
+                        type="button"
+                        hx-delete="{{ task.get_delete_url }}"
+                        hx-confirm="Are you sure you want to delete this task?"
+                        hx-target="#task-detail-pane"
+                        hx-swap="outerHTML"
+                        class="w-full px-4 py-2 text-sm font-medium text-white bg-red-600 rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-colors duration-200"
+                    >
+                        Delete Task
                     </button>
                 </div>
             </div>

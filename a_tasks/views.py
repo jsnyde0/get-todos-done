@@ -1,8 +1,8 @@
 import time
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse
-from django.http import HttpResponseBadRequest, HttpResponse, HttpResponseRedirect
-from django.views.decorators.http import require_POST
+from django.http import HttpResponseBadRequest, HttpResponse, HttpResponseRedirect, HttpResponseForbidden
+from django.views.decorators.http import require_POST, require_http_methods
 from django.contrib.auth.decorators import login_required
 from django.utils.timezone import now
 from django.contrib import messages
@@ -180,3 +180,12 @@ def update_subtask_title(request, id):
         subtask.save()
     context={'subtask': subtask}
     return render(request, 'tasks/todo_board.html#subtask_title_form', context)
+
+@login_required
+@require_http_methods(["DELETE"])
+def delete_task(request, id):
+    task = get_object_or_404(Task, id=id)
+    if task.author != request.user:
+        return HttpResponseForbidden("You don't have permission to delete this task.")
+    task.delete()
+    return HttpResponse(status=204)  # Return a 204 No Content response

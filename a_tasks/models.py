@@ -69,6 +69,9 @@ class Task(models.Model):
     
     def get_edit_url(self):
         return reverse('tasks:edit_task', kwargs={'id': self.id})
+    
+    def get_delete_url(self):
+        return reverse('tasks:delete_task', kwargs={'id': self.id})
 
     def __str__(self):
         return self.title if self.title else "Untitled Task"
