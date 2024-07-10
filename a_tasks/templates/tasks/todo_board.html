@@ -303,7 +303,7 @@ id="kanban_column_{{review_stage.slug}}">
                         type="button"
                         hx-delete="{{ task.get_delete_url }}"
                         hx-confirm="Are you sure you want to delete this task?"
-                        hx-target="#task-detail-pane"
+                        hx-target="#task-detail-content"
                         hx-swap="outerHTML"
                         class="w-full px-4 py-2 text-sm font-medium text-white bg-red-600 rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-colors duration-200"
                     >

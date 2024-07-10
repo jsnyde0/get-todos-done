@@ -87,9 +87,6 @@ def view_create_update_task(request, id=None):
     if not request.htmx:
         messages.info(request, 'View only accessible via HTMX... redirected to homepage.')
         return redirect(reverse('tasks:home'))
-    
-    # Simulate a delay of 0.5 seconds
-    time.sleep(0.5)
 
     # Get or create a task
     creating_subtask = False
@@ -143,9 +140,6 @@ def view_task(request, id):
     if not request.htmx:
         messages.info(request, 'View only accessible via HTMX... redirected to homepage.')
         return redirect(reverse('tasks:home'))
-    
-    # Simulate a delay of 0.5 seconds
-    time.sleep(0.5)
 
     task = get_object_or_404(Task, id=id)
     context = {
@@ -187,5 +181,11 @@ def delete_task(request, id):
     task = get_object_or_404(Task, id=id)
     if task.author != request.user:
         return HttpResponseForbidden("You don't have permission to delete this task.")
+    
+    parent_task = task.parent_task
     task.delete()
-    return HttpResponse(status=204)  # Return a 204 No Content response
+
+    if parent_task:
+        return view_create_update_task(request, str(parent_task.id))
+    else:
+        return redirect(reverse('tasks:home'))
