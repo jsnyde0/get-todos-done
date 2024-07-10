@@ -1,3 +1,5 @@
+from urllib.parse import urlencode
+
 def clean_filter_url(request):
     cleaned_params = {}
     for key, values in request.GET.lists():
